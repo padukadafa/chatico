@@ -14,12 +14,29 @@ class ChatListPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Chatico"),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const FaIcon(
-              FontAwesomeIcons.ellipsisVertical,
-            ),
-          )
+          PopupMenuButton(
+            iconSize: 28,
+            padding: EdgeInsets.zero,
+            offset: const Offset(0, 42),
+            constraints: const BoxConstraints(minWidth: 200),
+            color: colorScheme.surfaceBright,
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                  child: Text("Profile"),
+                  onTap: () {},
+                ),
+                PopupMenuItem(
+                  child: Text("Settings"),
+                  onTap: () {},
+                ),
+                PopupMenuItem(
+                  child: Text("Logout"),
+                  onTap: () {},
+                ),
+              ];
+            },
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
