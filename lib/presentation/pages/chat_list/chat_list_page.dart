@@ -23,15 +23,15 @@ class ChatListPage extends StatelessWidget {
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
-                  child: Text("Profile"),
+                  child: const Text("Profile"),
                   onTap: () {},
                 ),
                 PopupMenuItem(
-                  child: Text("Settings"),
+                  child: const Text("Settings"),
                   onTap: () {},
                 ),
                 PopupMenuItem(
-                  child: Text("Logout"),
+                  child: const Text("Logout"),
                   onTap: () {},
                 ),
               ];
