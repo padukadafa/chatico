@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chatico/presentation/pages/chat/chat_page.dart';
 import 'package:chatico/presentation/pages/chat_list/chat_list_page.dart';
+import 'package:chatico/presentation/pages/friends_list/friends_list_page.dart';
 import 'package:chatico/presentation/pages/wrapper/wrapper_page.dart';
 part 'app_router.gr.dart';
 
@@ -16,5 +17,6 @@ class AppRouter extends _$AppRouter {
           page: WrapperRoute.page,
         ),
         AutoRoute(page: ChatRoute.page),
+        AutoRoute(page: FriendsListRoute.page),
       ];
 }

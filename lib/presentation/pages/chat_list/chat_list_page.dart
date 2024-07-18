@@ -23,7 +23,9 @@ class ChatListPage extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          context.router.push(const FriendsListRoute());
+        },
         shape: const CircleBorder(),
         child: const FaIcon(FontAwesomeIcons.solidMessage),
       ),
