@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chatico/core/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -17,9 +18,22 @@ class FriendsListPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
+              onTap: () {
+                context.router.push(QrScannerRoute());
+              },
               title: Text("Add new friend"),
               leading: FaIcon(
                 FontAwesomeIcons.userPlus,
+                size: 21,
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                context.router.push(const UserQRRoute());
+              },
+              title: Text("Show my QR"),
+              leading: FaIcon(
+                FontAwesomeIcons.qrcode,
                 size: 21,
               ),
             ),
