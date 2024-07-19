@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chatico/core/router/app_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -32,7 +33,11 @@ class ChatListPage extends StatelessWidget {
                 ),
                 PopupMenuItem(
                   child: const Text("Logout"),
-                  onTap: () {},
+                  onTap: () async {
+                    FirebaseAuth.instance.signOut();
+                    context.router.pushAndPopUntil(const LoginRoute(),
+                        predicate: (r) => false);
+                  },
                 ),
               ];
             },

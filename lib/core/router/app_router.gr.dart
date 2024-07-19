@@ -27,10 +27,32 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const ChatPage(),
       );
     },
+    CodeVerificationRoute.name: (routeData) {
+      final args = routeData.argsAs<CodeVerificationRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CodeVerificationPage(
+          key: args.key,
+          phoneNumber: args.phoneNumber,
+        ),
+      );
+    },
     FriendsListRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const FriendsListPage(),
+      );
+    },
+    LoadingRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LoadingPage(),
+      );
+    },
+    LoginRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LoginPage(),
       );
     },
     WrapperRoute.name: (routeData) {
@@ -71,6 +93,44 @@ class ChatRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [CodeVerificationPage]
+class CodeVerificationRoute extends PageRouteInfo<CodeVerificationRouteArgs> {
+  CodeVerificationRoute({
+    Key? key,
+    required String phoneNumber,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CodeVerificationRoute.name,
+          args: CodeVerificationRouteArgs(
+            key: key,
+            phoneNumber: phoneNumber,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CodeVerificationRoute';
+
+  static const PageInfo<CodeVerificationRouteArgs> page =
+      PageInfo<CodeVerificationRouteArgs>(name);
+}
+
+class CodeVerificationRouteArgs {
+  const CodeVerificationRouteArgs({
+    this.key,
+    required this.phoneNumber,
+  });
+
+  final Key? key;
+
+  final String phoneNumber;
+
+  @override
+  String toString() {
+    return 'CodeVerificationRouteArgs{key: $key, phoneNumber: $phoneNumber}';
+  }
+}
+
+/// generated route for
 /// [FriendsListPage]
 class FriendsListRoute extends PageRouteInfo<void> {
   const FriendsListRoute({List<PageRouteInfo>? children})
@@ -80,6 +140,34 @@ class FriendsListRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'FriendsListRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [LoadingPage]
+class LoadingRoute extends PageRouteInfo<void> {
+  const LoadingRoute({List<PageRouteInfo>? children})
+      : super(
+          LoadingRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LoadingRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [LoginPage]
+class LoginRoute extends PageRouteInfo<void> {
+  const LoginRoute({List<PageRouteInfo>? children})
+      : super(
+          LoginRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LoginRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
