@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:chatico/presentation/pages/chat/chat_page.dart';
 import 'package:chatico/presentation/pages/chat_list/chat_list_page.dart';
 import 'package:chatico/presentation/pages/auth/code_verification/code_verification_page.dart';
+import 'package:chatico/presentation/pages/create_profile/create_profile_page.dart';
 import 'package:chatico/presentation/pages/friends_list/friends_list_page.dart';
 import 'package:chatico/presentation/pages/auth/login/login_page.dart';
 import 'package:chatico/presentation/pages/loading/loading_page.dart';
@@ -25,5 +26,6 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: LoadingRoute.page, initial: true),
         AutoRoute(page: UserQRRoute.page),
         AutoRoute(page: QrScannerRoute.page),
+        AutoRoute(page: CreateProfileRoute.page),
       ];
 }

@@ -37,6 +37,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    CreateProfileRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CreateProfilePage(),
+      );
+    },
     FriendsListRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -140,6 +146,20 @@ class CodeVerificationRouteArgs {
   String toString() {
     return 'CodeVerificationRouteArgs{key: $key, phoneNumber: $phoneNumber}';
   }
+}
+
+/// generated route for
+/// [CreateProfilePage]
+class CreateProfileRoute extends PageRouteInfo<void> {
+  const CreateProfileRoute({List<PageRouteInfo>? children})
+      : super(
+          CreateProfileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CreateProfileRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

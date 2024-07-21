@@ -22,6 +22,9 @@ class UserQRPage extends StatelessWidget {
             ),
             Text(FirebaseAuth.instance.currentUser!.displayName ?? "Name"),
             SizedBox(
+              height: 24,
+            ),
+            SizedBox(
               width: 250,
               child: PrettyQrView.data(
                   data: "chaticouid:${FirebaseAuth.instance.currentUser!.uid}"),
