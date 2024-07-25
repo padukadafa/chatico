@@ -14,6 +14,7 @@ import firebase_storage
 import irondash_engine_context
 import mobile_scanner
 import path_provider_foundation
+import sqflite
 import super_native_extensions
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
@@ -26,5 +27,6 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   IrondashEngineContextPlugin.register(with: registry.registrar(forPlugin: "IrondashEngineContextPlugin"))
   MobileScannerPlugin.register(with: registry.registrar(forPlugin: "MobileScannerPlugin"))
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
+  SqflitePlugin.register(with: registry.registrar(forPlugin: "SqflitePlugin"))
   SuperNativeExtensionsPlugin.register(with: registry.registrar(forPlugin: "SuperNativeExtensionsPlugin"))
 }

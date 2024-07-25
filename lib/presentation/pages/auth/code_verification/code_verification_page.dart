@@ -94,14 +94,13 @@ class _CodeVerificationPageState extends State<CodeVerificationPage> {
                   _loading = true;
                 });
                 try {
-                  print(_verificationId);
                   if (_verificationId != null) {
                     PhoneAuthCredential credential =
                         PhoneAuthProvider.credential(
                             verificationId: _verificationId!, smsCode: val);
                     await _auth.signInWithCredential(credential);
                     context.router.pushAndPopUntil(
-                      ChatListRoute(),
+                      LoadingRoute(),
                       predicate: (route) => false,
                     );
                   }

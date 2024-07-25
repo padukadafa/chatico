@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/data/data_sources/user_remote_data_source.dart';
 import 'package:chatico/data/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,6 +49,10 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
           setState(() {
             _loading = false;
           });
+          context.router.pushAndPopUntil(
+            LoadingRoute(),
+            predicate: (route) => false,
+          );
         },
         child: _loading
             ? CircularProgressIndicator()

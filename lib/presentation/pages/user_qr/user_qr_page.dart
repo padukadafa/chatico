@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
@@ -17,12 +18,36 @@ class UserQRPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 48,
+            CachedNetworkImage(
+              imageUrl: FirebaseAuth.instance.currentUser!.photoURL ?? "",
+              imageBuilder: (context, imageProvider) {
+                return CircleAvatar(
+                  radius: 48,
+                  backgroundImage: imageProvider,
+                );
+              },
+              errorWidget: (context, url, error) {
+                return CircleAvatar(
+                  radius: 48,
+                );
+              },
+              placeholder: (context, url) {
+                return CircleAvatar(
+                  radius: 48,
+                );
+              },
             ),
-            Text(FirebaseAuth.instance.currentUser!.displayName ?? "Name"),
             SizedBox(
-              height: 24,
+              height: 16,
+            ),
+            Text(
+              FirebaseAuth.instance.currentUser!.displayName ?? "Name",
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            SizedBox(
+              height: 48,
             ),
             SizedBox(
               width: 250,
