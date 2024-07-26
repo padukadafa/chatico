@@ -1,5 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chatico/common/utils/utils.dart';
+import 'package:chatico/common/widgets/user_avatar.dart';
 import 'package:chatico/core/router/app_router.dart';
+import 'package:chatico/data/data_sources/chat_remote_data_source.dart';
+import 'package:chatico/data/models/chat_room.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -51,33 +55,48 @@ class ChatListPage extends StatelessWidget {
         shape: const CircleBorder(),
         child: const FaIcon(FontAwesomeIcons.solidMessage),
       ),
-      body: ListView.builder(
-        itemCount: 4,
-        itemBuilder: (context, index) {
-          return ListTile(
-            onTap: () {
-              context.router.push(const ChatRoute());
-            },
-            leading: const CircleAvatar(),
-            title: const Text("Danang"),
-            subtitle: const Text("Hi Bruh"),
-            trailing: Container(
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: colorScheme.primary,
-              ),
-              child: Text(
-                "3",
-                style: TextStyle(
-                  color: colorScheme.onPrimary,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-          );
-        },
-      ),
+      body: StreamBuilder<List<ChatRoom>>(
+          stream: ChatRemoteDataSource().getChatRooms(),
+          builder: (context, snapshot) {
+            return ListView.builder(
+              itemCount: snapshot.data?.length ?? 0,
+              itemBuilder: (context, index) {
+                if (!snapshot.hasData) {
+                  return SizedBox();
+                }
+                final intercolutor =
+                    Utils.getIntercolutor(snapshot.data![index].users);
+                final chatRoom = snapshot.data![index];
+                return ListTile(
+                  onTap: () {
+                    context.router.push(ChatRoute(
+                      chatRoom: snapshot.data?[index] ?? const ChatRoom(),
+                    ));
+                  },
+                  leading: UserAvatar(intercolutor.uid),
+                  title: Text(intercolutor.name ?? ""),
+                  subtitle: Text(chatRoom.lastMessage?.message ?? ""),
+                  trailing: Visibility(
+                    visible: chatRoom.unreadedMessage != 0,
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: colorScheme.primary,
+                      ),
+                      child: Text(
+                        chatRoom.unreadedMessage.toString(),
+                        style: TextStyle(
+                          color: colorScheme.onPrimary,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          }),
     );
   }
 }

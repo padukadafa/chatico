@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
+import 'package:chatico/common/utils/utils.dart';
 import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/data/data_sources/user_remote_data_source.dart';
+import 'package:chatico/data/models/chat_room.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -53,9 +55,15 @@ class _QrScannerPageState extends State<QrScannerPage> {
               for (var element in barcodes.barcodes) {
                 if (element.rawValue?.startsWith('chaticouid:') ?? false) {
                   controller.stop();
-                  await UserRemoteDataSource().addFriend(
-                      element.rawValue!.replaceFirst("chaticouid:", ""));
-                  context.router.popAndPush(const ChatRoute());
+                  final uid = element.rawValue!.replaceFirst("chaticouid:", "");
+                  await UserRemoteDataSource().addFriend(uid);
+                  context.router.popAndPush(
+                    ChatRoute(
+                      chatRoom: ChatRoom(
+                        roomId: Utils.roomId(uid),
+                      ),
+                    ),
+                  );
                 }
               }
             },

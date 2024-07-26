@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chatico/common/utils/utils.dart';
 import 'package:chatico/common/widgets/user_avatar.dart';
 import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/data/data_sources/user_remote_data_source.dart';
+import 'package:chatico/data/models/chat_room.dart';
 import 'package:chatico/data/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -68,9 +70,8 @@ class FriendsListPage extends StatelessWidget {
                           4,
                           (index) {
                             return ListTile(
-                              onTap: () {},
                               leading: const CircleAvatar(),
-                              title: const Text("Danang"),
+                              title: Text(BoneMock.fullName),
                             );
                           },
                         ),
@@ -87,7 +88,16 @@ class FriendsListPage extends StatelessWidget {
                       snapshot.data?.length ?? 0,
                       (index) {
                         return ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            context.router.push(
+                              ChatRoute(
+                                chatRoom: ChatRoom(
+                                  roomId:
+                                      Utils.roomId(snapshot.data![index].uid),
+                                ),
+                              ),
+                            );
+                          },
                           leading: UserAvatar(snapshot.data![index].uid),
                           title: Text(snapshot.data![index].name ?? ""),
                         );

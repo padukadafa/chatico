@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:chatico/data/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_image_converter/flutter_image_converter.dart';
 import 'package:path_provider/path_provider.dart';
 import "package:path/path.dart";
@@ -25,5 +27,21 @@ class Utils {
             .create();
     newFile.writeAsBytesSync(bytes);
     return newFile;
+  }
+
+  static String roomId(String to) {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    if (uid.hashCode < to.hashCode) {
+      return "$uid&$to";
+    }
+    return "$to&$uid";
+  }
+
+  static UserModel getIntercolutor(List<UserModel> users) {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    if (users.first.uid == uid) {
+      return users.first;
+    }
+    return users[1];
   }
 }

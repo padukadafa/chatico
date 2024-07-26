@@ -15,6 +15,7 @@ dependencies:
   country_picker: ^2.0.26
   firebase_auth: ^5.1.2
   firebase_core: ^3.2.0
+  firebase_database: ^11.0.3
   firebase_storage: ^12.1.1
   flutter:
     sdk: flutter

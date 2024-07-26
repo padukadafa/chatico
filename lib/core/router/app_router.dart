@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chatico/data/models/chat_room.dart';
 import 'package:chatico/presentation/pages/chat/chat_page.dart';
 import 'package:chatico/presentation/pages/chat_list/chat_list_page.dart';
 import 'package:chatico/presentation/pages/auth/code_verification/code_verification_page.dart';

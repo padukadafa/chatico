@@ -1,4 +1,8 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chatico/data/data_sources/chat_remote_data_source.dart';
+import 'package:chatico/data/models/chat_room.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lorem/flutter_lorem.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,7 +11,9 @@ import 'package:super_context_menu/super_context_menu.dart';
 
 @RoutePage()
 class ChatPage extends StatelessWidget {
-  const ChatPage({super.key});
+  final ChatRoom chatRoom;
+  final messageController = TextEditingController();
+  ChatPage({super.key, required this.chatRoom});
 
   @override
   Widget build(BuildContext context) {
@@ -35,114 +41,127 @@ class ChatPage extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                itemCount: 12,
-                itemBuilder: (context, index) {
-                  if (index % 3 == 0) {
-                    return ContextMenuWidget(
-                      menuProvider: (MenuRequest request) {
-                        return Menu(
-                          children: [
-                            MenuAction(
-                              callback: () {},
-                              title: "Delete",
-                              image: MenuImage.icon(
-                                FontAwesomeIcons.trash,
-                              ),
-                              attributes: const MenuActionAttributes(
-                                destructive: true,
-                              ),
-                            ),
-                            MenuAction(
-                              callback: () {},
-                              title: "Copy",
-                              image: MenuImage.icon(
-                                FontAwesomeIcons.copy,
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                            top: 16,
-                            left: 86,
-                            right: 16,
-                          ),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.amber[100],
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                lorem(paragraphs: 1),
-                              ),
-                              const SizedBox(
-                                height: 6,
-                              ),
-                              Text(DateFormat("hh:mm").format(DateTime.now()))
-                            ],
-                          ),
-                        ),
-                      ),
+              child: StreamBuilder(
+                stream:
+                    ChatRemoteDataSource().getMessages(chatRoom.roomId ?? ""),
+                builder: (context, snapshot) {
+                  if (snapshot.data?.isEmpty ?? true) {
+                    return const Center(
+                      child: Text("Send new message to stasrt conversation"),
                     );
                   }
-                  return ContextMenuWidget(
-                    menuProvider: (MenuRequest request) {
-                      return Menu(
-                        children: [
-                          MenuAction(
-                            callback: () {},
-                            title: "Delete",
-                            image: MenuImage.icon(
-                              FontAwesomeIcons.trash,
-                            ),
-                            attributes: MenuActionAttributes(
-                              destructive: true,
+                  return ListView.builder(
+                    itemCount: snapshot.data?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      if (snapshot.data?[index].from ==
+                          FirebaseAuth.instance.currentUser?.uid) {
+                        return ContextMenuWidget(
+                          menuProvider: (MenuRequest request) {
+                            return Menu(
+                              children: [
+                                MenuAction(
+                                  callback: () {},
+                                  title: "Delete",
+                                  image: MenuImage.icon(
+                                    FontAwesomeIcons.trash,
+                                  ),
+                                  attributes: const MenuActionAttributes(
+                                    destructive: true,
+                                  ),
+                                ),
+                                MenuAction(
+                                  callback: () {},
+                                  title: "Copy",
+                                  image: MenuImage.icon(
+                                    FontAwesomeIcons.copy,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                top: 16,
+                                left: 86,
+                                right: 16,
+                              ),
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.amber[100],
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    snapshot.data?[index].message ?? "",
+                                  ),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Text(DateFormat("hh:mm")
+                                      .format(snapshot.data![index].createdAt!))
+                                ],
+                              ),
                             ),
                           ),
-                          MenuAction(
-                            callback: () {},
-                            title: "Copy",
-                            image: MenuImage.icon(
-                              FontAwesomeIcons.copy,
+                        );
+                      }
+                      return ContextMenuWidget(
+                        menuProvider: (MenuRequest request) {
+                          return Menu(
+                            children: [
+                              MenuAction(
+                                callback: () {},
+                                title: "Delete",
+                                image: MenuImage.icon(
+                                  FontAwesomeIcons.trash,
+                                ),
+                                attributes: MenuActionAttributes(
+                                  destructive: true,
+                                ),
+                              ),
+                              MenuAction(
+                                callback: () {},
+                                title: "Copy",
+                                image: MenuImage.icon(
+                                  FontAwesomeIcons.copy,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                              top: 16,
+                              left: 16,
+                              right: 86,
+                            ),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: colorScheme.surfaceBright,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  snapshot.data?[index].message ?? "",
+                                ),
+                                const SizedBox(
+                                  height: 6,
+                                ),
+                                Text(DateFormat("hh:mm").format(DateTime.now()))
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       );
                     },
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        margin: const EdgeInsets.only(
-                          top: 16,
-                          left: 16,
-                          right: 86,
-                        ),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: colorScheme.surfaceBright,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              lorem(paragraphs: 1),
-                            ),
-                            const SizedBox(
-                              height: 6,
-                            ),
-                            Text(DateFormat("hh:mm").format(DateTime.now()))
-                          ],
-                        ),
-                      ),
-                    ),
                   );
                 },
               ),
@@ -161,18 +180,27 @@ class ChatPage extends StatelessWidget {
                 ],
                 color: colorScheme.surfaceBright,
               ),
-              child: const Row(
+              child: Row(
                 children: [
                   Expanded(
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: messageController,
+                      decoration: const InputDecoration(
                         hintText: "Message",
                         border: InputBorder.none,
                       ),
                     ),
                   ),
-                  FaIcon(
-                    FontAwesomeIcons.solidPaperPlane,
+                  GestureDetector(
+                    onTap: () async {
+                      await ChatRemoteDataSource().sendMessage(
+                          chatRoom.roomId ?? "",
+                          message: messageController.text);
+                      messageController.clear();
+                    },
+                    child: FaIcon(
+                      FontAwesomeIcons.solidPaperPlane,
+                    ),
                   )
                 ],
               ),
