@@ -22,10 +22,14 @@ class ChatRemoteDataSource {
 
     return snapshot.onValue.asyncMap<List<Message>>((e) {
       if (e.snapshot.value != null) {
-        return e.snapshot.children.map((s) {
-          final a = s.value as Map;
-          return Message.fromJson(Map<String, dynamic>.from(a));
-        }).toList();
+        return e.snapshot.children
+            .map((s) {
+              final a = s.value as Map;
+              return Message.fromJson(Map<String, dynamic>.from(a));
+            })
+            .toList()
+            .reversed
+            .toList();
       }
       return [];
     });
@@ -76,7 +80,10 @@ class ChatRemoteDataSource {
       id: messageId,
     );
     await messageRef.update(msg.toJson());
-    await roomRef.update({'lastMessage': msg.toJson()});
+    await roomRef.update({
+      'lastMessage': msg.toJson(),
+      'unreadedMessage': (chatRoom.value as Map)['unreadedMessage'] + 1
+    });
   }
 
   Stream<List<ChatRoom>> getChatRooms() {

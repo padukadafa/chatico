@@ -94,11 +94,17 @@ class FriendsListPage extends StatelessWidget {
                                 chatRoom: ChatRoom(
                                   roomId:
                                       Utils.roomId(snapshot.data![index].uid),
+                                  users: [
+                                    snapshot.data![index],
+                                  ],
                                 ),
                               ),
                             );
                           },
-                          leading: UserAvatar(snapshot.data![index].uid),
+                          leading: Hero(
+                            tag: "intercolutorAvatar",
+                            child: UserAvatar(snapshot.data![index].uid),
+                          ),
                           title: Text(snapshot.data![index].name ?? ""),
                         );
                       },

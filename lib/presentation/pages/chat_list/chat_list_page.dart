@@ -62,7 +62,7 @@ class ChatListPage extends StatelessWidget {
               itemCount: snapshot.data?.length ?? 0,
               itemBuilder: (context, index) {
                 if (!snapshot.hasData) {
-                  return SizedBox();
+                  return const SizedBox();
                 }
                 final intercolutor =
                     Utils.getIntercolutor(snapshot.data![index].users);
@@ -73,7 +73,10 @@ class ChatListPage extends StatelessWidget {
                       chatRoom: snapshot.data?[index] ?? const ChatRoom(),
                     ));
                   },
-                  leading: UserAvatar(intercolutor.uid),
+                  leading: Hero(
+                    tag: "intercolutorAvatar",
+                    child: UserAvatar(intercolutor.uid),
+                  ),
                   title: Text(intercolutor.name ?? ""),
                   subtitle: Text(chatRoom.lastMessage?.message ?? ""),
                   trailing: Visibility(

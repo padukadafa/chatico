@@ -38,6 +38,7 @@ class Utils {
   }
 
   static UserModel getIntercolutor(List<UserModel> users) {
+    if (users.length == 1) return users.first;
     final uid = FirebaseAuth.instance.currentUser!.uid;
     if (users.first.uid == uid) {
       return users.first;
