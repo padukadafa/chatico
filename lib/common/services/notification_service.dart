@@ -4,6 +4,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:chatico/common/values/app_constants.dart';
 import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/data/data_sources/chat_remote_data_source.dart';
+import 'package:chatico/data/models/chat_room.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -81,8 +82,8 @@ class NotificationService {
   @pragma("vm:entry-point")
   static Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
-    final title = message.notification!.title;
-    final body = message.notification!.body;
+    final title = message.data['title'];
+    final body = message.data['body'];
     const String channel = "message";
     final summary = message.data['summary'];
     final roomId = message.data['roomId'];
@@ -111,12 +112,12 @@ class NotificationService {
 
   static Future<void> listenNotification() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      final title = message.notification!.title;
-      final body = message.notification!.body;
+      final title = message.data['title'];
+      final body = message.data['body'];
       const String channel = "message";
       final summary = message.data['summary'];
       final roomId = message.data['roomId'];
-
+      print(message.data);
       AwesomeNotifications().createNotification(
           content: NotificationContent(
             id: UniqueKey().hashCode,
@@ -142,13 +143,13 @@ class NotificationService {
 
   static Future<void> onActionReceivedMethod(
       ReceivedAction receivedAction) async {
-    final chatRoom =
-        await ChatRemoteDataSource().getChatRoomById(receivedAction.groupKey!);
-    if (chatRoom != null) {
+    final chatRoomSnapshot =
+        await chatRoomRef.doc(receivedAction.groupKey!).get();
+    if (chatRoomSnapshot.exists) {
       GetIt.I<AppRouter>().replaceAll([
         const ChatListRoute(),
         ChatRoute(
-          chatRoom: chatRoom,
+          chatRoom: chatRoomSnapshot.data!,
         ),
       ]);
     }
@@ -181,18 +182,16 @@ class NotificationService {
         body: jsonEncode({
           "message": {
             "token": notification.target,
-            "notification": {
-              "body": notification.body,
-              "title": notification.title,
-            },
             "data": {
               "roomId": notification.roomId,
+              "body": notification.body,
+              "title": notification.title,
             },
           }
         }),
       );
     } catch (e) {
-      debugPrint("Notification :${e.toString()}");
+      debugPrint("Notification Error :${e.toString()}");
     }
   }
 }

@@ -10,7 +10,7 @@ part 'chat_room.g.dart';
 @freezed
 class ChatRoom with _$ChatRoom {
   const factory ChatRoom({
-    String? roomId,
+    @Id() String? roomId,
     @UserModelConverter() @Default([]) List<UserModel> users,
     Message? lastMessage,
     @Default(0) int unreadedMessage,

@@ -9,9 +9,11 @@ import 'package:chatico/data/data_sources/user_remote_data_source.dart';
 import 'package:chatico/data/models/chat_room.dart';
 import 'package:chatico/data/models/message.dart';
 import 'package:chatico/data/models/notification.dart';
+import 'package:chatico/data/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import 'package:uuid/v4.dart';
@@ -125,14 +127,6 @@ class ChatRemoteDataSource {
     );
   }
 
-  Future<ChatRoom?> getChatRoomById(String id) async {
-    final response = await _firestore.collection("chatRooms").doc(id).get();
-    if (response.exists) {
-      return ChatRoom.fromJson(response.data()!);
-    }
-    return null;
-  }
-
   Future<void> deleteMessage(String roomId, String messageId) async {
     final messageRef =
         FirebaseDatabase.instance.ref("chatRooms/$roomId/messages/$messageId");
@@ -150,5 +144,20 @@ class ChatRemoteDataSource {
       },
       SetOptions(merge: true),
     );
+  }
+
+  Future<void> updateFcmToken(ChatRoom chatRoom) async {
+    if (chatRoom.users.length < 2) {
+      return;
+    }
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    final uid = _auth.currentUser?.uid;
+    final currentUser = chatRoom.users.firstWhere((e) => e.uid == uid);
+    if (currentUser.fcmToken != fcmToken) {
+      List<UserModel> newUsers = chatRoom.users.toList();
+      newUsers.removeWhere((e) => e.uid == uid);
+      newUsers.add(currentUser.copyWith(fcmToken: fcmToken));
+      chatRoomRef.doc(chatRoom.roomId).update(users: newUsers);
+    }
   }
 }
