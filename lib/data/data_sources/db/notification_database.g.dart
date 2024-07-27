@@ -96,7 +96,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `notifications` (`id` INTEGER NOT NULL, `title` TEXT, `body` TEXT, `summary` TEXT, `senderUid` TEXT, `senderName` TEXT, `receiver` TEXT, `createdAt` TEXT, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `notifications` (`id` INTEGER, `title` TEXT, `body` TEXT, `summary` TEXT, `senderUid` TEXT, `receiver` TEXT, `target` TEXT, `createdAt` TEXT, `roomId` TEXT, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -125,9 +125,10 @@ class _$NotificationDao extends NotificationDao {
                   'body': item.body,
                   'summary': item.summary,
                   'senderUid': item.senderUid,
-                  'senderName': item.senderName,
                   'receiver': item.receiver,
-                  'createdAt': item.createdAt
+                  'target': item.target,
+                  'createdAt': item.createdAt,
+                  'roomId': item.roomId
                 },
             changeListener);
 
@@ -144,14 +145,15 @@ class _$NotificationDao extends NotificationDao {
     return _queryAdapter.queryListStream(
         'select * from notifications where receiver = ?1',
         mapper: (Map<String, Object?> row) => NotificationModel(
-            id: row['id'] as int,
+            id: row['id'] as int?,
             title: row['title'] as String?,
             createdAt: row['createdAt'] as String?,
             body: row['body'] as String?,
-            senderName: row['senderName'] as String?,
             senderUid: row['senderUid'] as String?,
             receiver: row['receiver'] as String?,
-            summary: row['summary'] as String?),
+            summary: row['summary'] as String?,
+            target: row['target'] as String?,
+            roomId: row['roomId'] as String?),
         arguments: [uid],
         queryableName: 'notifications',
         isView: false);

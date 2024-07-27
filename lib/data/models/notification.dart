@@ -8,18 +8,20 @@ class NotificationModel {
   final String? body;
   final String? summary;
   final String? senderUid;
-  final String? senderName;
   final String? receiver;
+  final String? target;
   final String? createdAt;
+  final String? roomId;
 
   NotificationModel({
     this.id,
     this.title,
     this.createdAt,
     this.body,
-    this.senderName,
     this.senderUid,
     this.receiver,
     this.summary,
+    this.target,
+    this.roomId,
   });
 }

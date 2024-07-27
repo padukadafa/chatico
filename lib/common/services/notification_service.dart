@@ -1,17 +1,14 @@
-import 'dart:math';
+import 'dart:convert';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:chatico/common/values/app_constants.dart';
 import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/data/data_sources/chat_remote_data_source.dart';
-import 'package:chatico/presentation/pages/chat/chat_page.dart';
-import 'package:chatico/presentation/pages/chat_list/chat_list_page.dart';
-import 'package:chatico/presentation/pages/loading/loading_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:chatico/data/models/notification.dart' as chatico;
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:http/http.dart' as http;
 
@@ -149,7 +146,7 @@ class NotificationService {
         await ChatRemoteDataSource().getChatRoomById(receivedAction.groupKey!);
     if (chatRoom != null) {
       GetIt.I<AppRouter>().replaceAll([
-        ChatListRoute(),
+        const ChatListRoute(),
         ChatRoute(
           chatRoom: chatRoom,
         ),
@@ -172,23 +169,30 @@ class NotificationService {
     return credentials.accessToken.data;
   }
 
-  // Future<void> sendNotification() async {
-  //   Future<void> sendNotification(Map<String, dynamic> data) async {
-  //     final
-  //     try {
-  //       final response = await dio.post(
-  //         AppConstant.FIREBASE_MESSAGING_NOTIFICATION_URL,
-  //         data: data,
-  //         options: option,
-  //       );
-  //       print(response.data);
-  //     } catch (e) {
-  //       if (e is DioException) {
-  //         print(e.response);
-  //         print(e.error);
-  //         print(e.message);
-  //       }
-  //     }
-  //   }
-  // }
+  static Future<void> sendNotification(
+      chatico.NotificationModel notification) async {
+    final authToken = await getToken();
+    try {
+      await http.post(
+        Uri.parse(AppConstants.FIREBASE_MESSAGING_NOTIFICATION_URL),
+        headers: {
+          "Authorization": "Bearer $authToken",
+        },
+        body: jsonEncode({
+          "message": {
+            "token": notification.target,
+            "notification": {
+              "body": notification.body,
+              "title": notification.title,
+            },
+            "data": {
+              "roomId": notification.roomId,
+            },
+          }
+        }),
+      );
+    } catch (e) {
+      debugPrint("Notification :${e.toString()}");
+    }
+  }
 }

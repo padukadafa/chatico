@@ -59,7 +59,7 @@ class MessageBox extends StatelessWidget {
   }
 
   _sendMessage(String message) async {
-    ChatRemoteDataSource().sendMessage(chatRoom.roomId ?? "", message: message);
+    ChatRemoteDataSource().sendMessage(chatRoom, message: message);
     messageController.clear();
   }
 }

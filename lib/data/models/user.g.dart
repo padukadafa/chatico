@@ -15,6 +15,28 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       fcmToken: json['fcmToken'] as String?,
     );
 
+const _$$UserModelImplFieldMap = <String, String>{
+  'uid': 'uid',
+  'name': 'name',
+  'phoneNumber': 'phoneNumber',
+  'avatar': 'avatar',
+  'fcmToken': 'fcmToken',
+};
+
+// ignore: unused_element
+abstract class _$$UserModelImplPerFieldToJson {
+  // ignore: unused_element
+  static Object? uid(String instance) => instance;
+  // ignore: unused_element
+  static Object? name(String? instance) => instance;
+  // ignore: unused_element
+  static Object? phoneNumber(String? instance) => instance;
+  // ignore: unused_element
+  static Object? avatar(String? instance) => instance;
+  // ignore: unused_element
+  static Object? fcmToken(String? instance) => instance;
+}
+
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
