@@ -1,9 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chatico/common/services/notification_service.dart';
 import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/data/data_sources/user_remote_data_source.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 @RoutePage()
 class LoadingPage extends StatefulWidget {
@@ -14,18 +17,20 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<LoadingPage> {
+  final dataSource = UserRemoteDataSource();
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((r) async {
       if (FirebaseAuth.instance.currentUser != null) {
-        final user = await UserRemoteDataSource()
-            .getUser(FirebaseAuth.instance.currentUser!.uid);
+        final user =
+            await dataSource.getUser(FirebaseAuth.instance.currentUser!.uid);
         if (user == null) {
           context.router.pushAndPopUntil(const CreateProfileRoute(),
               predicate: (r) => false);
           return;
         }
+        await dataSource.updateFcmToken();
         context.router
             .pushAndPopUntil(const ChatListRoute(), predicate: (r) => false);
         return;
