@@ -12,6 +12,7 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
       avatar: json['avatar'] as String?,
+      fcmToken: json['fcmToken'] as String?,
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'name': instance.name,
       'phoneNumber': instance.phoneNumber,
       'avatar': instance.avatar,
+      'fcmToken': instance.fcmToken,
     };

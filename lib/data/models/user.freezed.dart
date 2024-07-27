@@ -24,6 +24,7 @@ mixin _$UserModel {
   String? get name => throw _privateConstructorUsedError;
   String? get phoneNumber => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
+  String? get fcmToken => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,12 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call({String uid, String? name, String? phoneNumber, String? avatar});
+  $Res call(
+      {String uid,
+      String? name,
+      String? phoneNumber,
+      String? avatar,
+      String? fcmToken});
 }
 
 /// @nodoc
@@ -56,6 +62,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? name = freezed,
     Object? phoneNumber = freezed,
     Object? avatar = freezed,
+    Object? fcmToken = freezed,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -74,6 +81,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as String?,
+      fcmToken: freezed == fcmToken
+          ? _value.fcmToken
+          : fcmToken // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -86,7 +97,12 @@ abstract class _$$UserModelImplCopyWith<$Res>
       __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, String? name, String? phoneNumber, String? avatar});
+  $Res call(
+      {String uid,
+      String? name,
+      String? phoneNumber,
+      String? avatar,
+      String? fcmToken});
 }
 
 /// @nodoc
@@ -104,6 +120,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? name = freezed,
     Object? phoneNumber = freezed,
     Object? avatar = freezed,
+    Object? fcmToken = freezed,
   }) {
     return _then(_$UserModelImpl(
       uid: null == uid
@@ -122,6 +139,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as String?,
+      fcmToken: freezed == fcmToken
+          ? _value.fcmToken
+          : fcmToken // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -130,7 +151,11 @@ class __$$UserModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserModelImpl implements _UserModel {
   const _$UserModelImpl(
-      {required this.uid, this.name, this.phoneNumber, this.avatar});
+      {required this.uid,
+      this.name,
+      this.phoneNumber,
+      this.avatar,
+      this.fcmToken});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
@@ -143,10 +168,12 @@ class _$UserModelImpl implements _UserModel {
   final String? phoneNumber;
   @override
   final String? avatar;
+  @override
+  final String? fcmToken;
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, name: $name, phoneNumber: $phoneNumber, avatar: $avatar)';
+    return 'UserModel(uid: $uid, name: $name, phoneNumber: $phoneNumber, avatar: $avatar, fcmToken: $fcmToken)';
   }
 
   @override
@@ -158,12 +185,15 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar));
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.fcmToken, fcmToken) ||
+                other.fcmToken == fcmToken));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, name, phoneNumber, avatar);
+  int get hashCode =>
+      Object.hash(runtimeType, uid, name, phoneNumber, avatar, fcmToken);
 
   @JsonKey(ignore: true)
   @override
@@ -184,7 +214,8 @@ abstract class _UserModel implements UserModel {
       {required final String uid,
       final String? name,
       final String? phoneNumber,
-      final String? avatar}) = _$UserModelImpl;
+      final String? avatar,
+      final String? fcmToken}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
@@ -197,6 +228,8 @@ abstract class _UserModel implements UserModel {
   String? get phoneNumber;
   @override
   String? get avatar;
+  @override
+  String? get fcmToken;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>

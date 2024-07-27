@@ -9,7 +9,7 @@ class Message with _$Message {
     String? roomId,
     String? message,
     @EpochDateTimeConverter() DateTime? createdAt,
-    String? from,
+    String? sender,
     String? image,
     String? file,
     String? id,

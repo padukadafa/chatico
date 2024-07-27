@@ -1,3 +1,5 @@
+import 'package:chatico/data/data_sources/chat_remote_data_source.dart';
+import 'package:chatico/data/models/chat_room.dart';
 import 'package:chatico/data/models/message.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,21 +9,26 @@ import 'package:super_context_menu/super_context_menu.dart';
 
 class ChatItem extends StatelessWidget {
   final Message message;
+  final ChatRoom chatRoom;
   const ChatItem({
     super.key,
     required this.message,
+    required this.chatRoom,
   });
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final isSender = message.from == FirebaseAuth.instance.currentUser?.uid;
+    final isSender = message.sender == FirebaseAuth.instance.currentUser?.uid;
     return ContextMenuWidget(
       menuProvider: (MenuRequest request) {
         return Menu(
           children: [
             MenuAction(
-              callback: () {},
+              callback: () async {
+                await ChatRemoteDataSource()
+                    .deleteMessage(chatRoom.roomId!, message.id!);
+              },
               title: "Delete",
               image: MenuImage.icon(
                 FontAwesomeIcons.trash,

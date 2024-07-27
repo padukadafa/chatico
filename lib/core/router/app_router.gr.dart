@@ -18,7 +18,7 @@ abstract class _$AppRouter extends RootStackRouter {
     ChatListRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: ChatListPage(),
+        child: const ChatListPage(),
       );
     },
     ChatRoute.name: (routeData) {

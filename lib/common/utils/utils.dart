@@ -41,8 +41,8 @@ class Utils {
     if (users.length == 1) return users.first;
     final uid = FirebaseAuth.instance.currentUser!.uid;
     if (users.first.uid == uid) {
-      return users.first;
+      return users[1];
     }
-    return users[1];
+    return users[0];
   }
 }

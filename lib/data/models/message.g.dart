@@ -12,7 +12,7 @@ _$MessageImpl _$$MessageImplFromJson(Map<String, dynamic> json) =>
       message: json['message'] as String?,
       createdAt: _$JsonConverterFromJson<int, DateTime>(
           json['createdAt'], const EpochDateTimeConverter().fromJson),
-      from: json['from'] as String?,
+      sender: json['sender'] as String?,
       image: json['image'] as String?,
       file: json['file'] as String?,
       id: json['id'] as String?,
@@ -24,7 +24,7 @@ Map<String, dynamic> _$$MessageImplToJson(_$MessageImpl instance) =>
       'message': instance.message,
       'createdAt': _$JsonConverterToJson<int, DateTime>(
           instance.createdAt, const EpochDateTimeConverter().toJson),
-      'from': instance.from,
+      'sender': instance.sender,
       'image': instance.image,
       'file': instance.file,
       'id': instance.id,

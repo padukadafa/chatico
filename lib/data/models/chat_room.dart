@@ -19,18 +19,24 @@ class ChatRoom with _$ChatRoom {
 }
 
 class UserModelConverter
-    implements JsonConverter<List<UserModel>, List<dynamic>> {
+    implements JsonConverter<List<UserModel>, Map<dynamic, dynamic>> {
   const UserModelConverter();
 
   @override
-  List<UserModel> fromJson(List<dynamic> json) {
-    return json
+  List<UserModel> fromJson(Map<dynamic, dynamic>? json) {
+    if (json == null) {
+      return [];
+    }
+    return json.values
         .map((e) => UserModel.fromJson(Map<String, dynamic>.from(e)))
         .toList();
   }
 
   @override
-  List<Map<String, dynamic>> toJson(List<UserModel> object) {
-    return object.map((e) => e.toJson()).toList();
+  Map<dynamic, dynamic> toJson(List<UserModel> object) {
+    return Map.fromIterable(
+      object.map((e) => e.toJson()),
+      key: (element) => element['uid'],
+    );
   }
 }

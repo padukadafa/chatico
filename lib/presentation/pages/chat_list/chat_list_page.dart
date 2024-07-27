@@ -80,7 +80,9 @@ class ChatListPage extends StatelessWidget {
                   title: Text(intercolutor.name ?? ""),
                   subtitle: Text(chatRoom.lastMessage?.message ?? ""),
                   trailing: Visibility(
-                    visible: chatRoom.unreadedMessage != 0,
+                    visible: chatRoom.unreadedMessage != 0 &&
+                        chatRoom.lastMessage?.sender !=
+                            FirebaseAuth.instance.currentUser?.uid,
                     child: Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(

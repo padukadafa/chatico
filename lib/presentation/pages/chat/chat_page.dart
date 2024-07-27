@@ -53,6 +53,7 @@ class ChatPage extends StatelessWidget {
                       child: Text("Send new message to stasrt conversation"),
                     );
                   }
+                  ChatRemoteDataSource().resetUnreadedMessage(chatRoom);
                   return ListView.builder(
                     reverse: true,
                     controller: scrollController,
@@ -60,6 +61,7 @@ class ChatPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return ChatItem(
                         message: snapshot.data![index],
+                        chatRoom: chatRoom,
                       );
                     },
                   );

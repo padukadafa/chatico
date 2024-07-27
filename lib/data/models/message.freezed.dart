@@ -24,7 +24,7 @@ mixin _$Message {
   String? get message => throw _privateConstructorUsedError;
   @EpochDateTimeConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
-  String? get from => throw _privateConstructorUsedError;
+  String? get sender => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
   String? get file => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
@@ -43,7 +43,7 @@ abstract class $MessageCopyWith<$Res> {
       {String? roomId,
       String? message,
       @EpochDateTimeConverter() DateTime? createdAt,
-      String? from,
+      String? sender,
       String? image,
       String? file,
       String? id});
@@ -65,7 +65,7 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
     Object? roomId = freezed,
     Object? message = freezed,
     Object? createdAt = freezed,
-    Object? from = freezed,
+    Object? sender = freezed,
     Object? image = freezed,
     Object? file = freezed,
     Object? id = freezed,
@@ -83,9 +83,9 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      from: freezed == from
-          ? _value.from
-          : from // ignore: cast_nullable_to_non_nullable
+      sender: freezed == sender
+          ? _value.sender
+          : sender // ignore: cast_nullable_to_non_nullable
               as String?,
       image: freezed == image
           ? _value.image
@@ -114,7 +114,7 @@ abstract class _$$MessageImplCopyWith<$Res> implements $MessageCopyWith<$Res> {
       {String? roomId,
       String? message,
       @EpochDateTimeConverter() DateTime? createdAt,
-      String? from,
+      String? sender,
       String? image,
       String? file,
       String? id});
@@ -134,7 +134,7 @@ class __$$MessageImplCopyWithImpl<$Res>
     Object? roomId = freezed,
     Object? message = freezed,
     Object? createdAt = freezed,
-    Object? from = freezed,
+    Object? sender = freezed,
     Object? image = freezed,
     Object? file = freezed,
     Object? id = freezed,
@@ -152,9 +152,9 @@ class __$$MessageImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      from: freezed == from
-          ? _value.from
-          : from // ignore: cast_nullable_to_non_nullable
+      sender: freezed == sender
+          ? _value.sender
+          : sender // ignore: cast_nullable_to_non_nullable
               as String?,
       image: freezed == image
           ? _value.image
@@ -179,7 +179,7 @@ class _$MessageImpl implements _Message {
       {this.roomId,
       this.message,
       @EpochDateTimeConverter() this.createdAt,
-      this.from,
+      this.sender,
       this.image,
       this.file,
       this.id});
@@ -195,7 +195,7 @@ class _$MessageImpl implements _Message {
   @EpochDateTimeConverter()
   final DateTime? createdAt;
   @override
-  final String? from;
+  final String? sender;
   @override
   final String? image;
   @override
@@ -205,7 +205,7 @@ class _$MessageImpl implements _Message {
 
   @override
   String toString() {
-    return 'Message(roomId: $roomId, message: $message, createdAt: $createdAt, from: $from, image: $image, file: $file, id: $id)';
+    return 'Message(roomId: $roomId, message: $message, createdAt: $createdAt, sender: $sender, image: $image, file: $file, id: $id)';
   }
 
   @override
@@ -217,7 +217,7 @@ class _$MessageImpl implements _Message {
             (identical(other.message, message) || other.message == message) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
-            (identical(other.from, from) || other.from == from) &&
+            (identical(other.sender, sender) || other.sender == sender) &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.file, file) || other.file == file) &&
             (identical(other.id, id) || other.id == id));
@@ -226,7 +226,7 @@ class _$MessageImpl implements _Message {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, roomId, message, createdAt, from, image, file, id);
+      runtimeType, roomId, message, createdAt, sender, image, file, id);
 
   @JsonKey(ignore: true)
   @override
@@ -247,7 +247,7 @@ abstract class _Message implements Message {
       {final String? roomId,
       final String? message,
       @EpochDateTimeConverter() final DateTime? createdAt,
-      final String? from,
+      final String? sender,
       final String? image,
       final String? file,
       final String? id}) = _$MessageImpl;
@@ -262,7 +262,7 @@ abstract class _Message implements Message {
   @EpochDateTimeConverter()
   DateTime? get createdAt;
   @override
-  String? get from;
+  String? get sender;
   @override
   String? get image;
   @override

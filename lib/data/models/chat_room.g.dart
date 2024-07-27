@@ -11,7 +11,7 @@ _$ChatRoomImpl _$$ChatRoomImplFromJson(Map<String, dynamic> json) =>
       roomId: json['roomId'] as String?,
       users: json['users'] == null
           ? const []
-          : const UserModelConverter().fromJson(json['users'] as List),
+          : const UserModelConverter().fromJson(json['users'] as Map),
       lastMessage: json['lastMessage'] == null
           ? null
           : Message.fromJson(json['lastMessage'] as Map<String, dynamic>),
