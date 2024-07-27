@@ -8,16 +8,28 @@ import 'package:chatico/presentation/pages/chat/widgets/message_box.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   final ChatRoom chatRoom;
-  final messageController = TextEditingController();
-  final scrollController = ScrollController();
 
-  ChatPage({super.key, required this.chatRoom});
+  const ChatPage({super.key, required this.chatRoom});
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  final messageController = TextEditingController();
+
+  final scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    ChatRemoteDataSource().updateFcmToken(widget.chatRoom);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final intercolutor = Utils.getIntercolutor(chatRoom.users);
+    final intercolutor = Utils.getIntercolutor(widget.chatRoom.users);
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -45,15 +57,15 @@ class ChatPage extends StatelessWidget {
           children: [
             Expanded(
               child: StreamBuilder(
-                stream:
-                    ChatRemoteDataSource().getMessages(chatRoom.roomId ?? ""),
+                stream: ChatRemoteDataSource()
+                    .getMessages(widget.chatRoom.roomId ?? ""),
                 builder: (context, snapshot) {
                   if (snapshot.data?.isEmpty ?? true) {
                     return const Center(
                       child: Text("Send new message to stasrt conversation"),
                     );
                   }
-                  ChatRemoteDataSource().resetUnreadedMessage(chatRoom);
+                  ChatRemoteDataSource().resetUnreadedMessage(widget.chatRoom);
                   return ListView.builder(
                     reverse: true,
                     controller: scrollController,
@@ -61,7 +73,7 @@ class ChatPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return ChatItem(
                         message: snapshot.data![index],
-                        chatRoom: chatRoom,
+                        chatRoom: widget.chatRoom,
                       );
                     },
                   );
@@ -70,7 +82,7 @@ class ChatPage extends StatelessWidget {
             ),
             MessageBox(
               messageController: messageController,
-              chatRoom: chatRoom,
+              chatRoom: widget.chatRoom,
             )
           ],
         ),
