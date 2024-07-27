@@ -112,12 +112,14 @@ class NotificationService {
 
   static Future<void> listenNotification() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      if (GetIt.I<AppRouter>().current.name == "ChatRoute") {
+        return;
+      }
       final title = message.data['title'];
       final body = message.data['body'];
       const String channel = "message";
       final summary = message.data['summary'];
       final roomId = message.data['roomId'];
-      print(message.data);
       AwesomeNotifications().createNotification(
           content: NotificationContent(
             id: UniqueKey().hashCode,
