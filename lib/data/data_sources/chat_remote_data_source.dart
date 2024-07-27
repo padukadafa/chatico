@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
+import 'package:chatico/common/services/notification_service.dart';
 import 'package:chatico/common/services/upload_service.dart';
+import 'package:chatico/common/utils/utils.dart';
 import 'package:chatico/data/data_sources/user_remote_data_source.dart';
 import 'package:chatico/data/models/chat_room.dart';
 import 'package:chatico/data/models/message.dart';
+import 'package:chatico/data/models/notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -38,14 +41,14 @@ class ChatRemoteDataSource {
     });
   }
 
-  Future<void> sendMessage(String roomId,
+  Future<void> sendMessage(ChatRoom chatRoom,
       {String? message, File? image, File? file}) async {
     final uploadService = UploadService(_storage);
     final messageId = const UuidV4().generate();
+    final roomId = chatRoom.roomId!;
     final messageRef =
         FirebaseDatabase.instance.ref("chatRooms/$roomId/messages/$messageId");
-    ChatRoom? chatRoom = await getChatRoomById(roomId);
-    if (chatRoom == null) {
+    if (chatRoom.users.length < 2) {
       final firstUser =
           await UserRemoteDataSource().getUser(roomId.split("&")[0]);
       final secondUser =
@@ -83,23 +86,20 @@ class ChatRemoteDataSource {
       id: messageId,
     );
     await messageRef.update(msg.toJson());
+    final intercolutor = Utils.getIntercolutor(chatRoom.users);
+    await NotificationService.sendNotification(
+      NotificationModel(
+        body: msg.message,
+        createdAt: DateTime.now().toIso8601String(),
+        senderUid: _auth.currentUser?.uid,
+        roomId: roomId,
+        summary: "New Message",
+        target: intercolutor.fcmToken,
+        receiver: intercolutor.uid,
+        title: _auth.currentUser?.displayName,
+      ),
+    );
     await updateChatRoom(chatRoom, msg);
-  }
-
-  Stream<List<ChatRoom>> getChatRooms() async* {
-    final uid = _auth.currentUser?.uid;
-    while (true) {
-      await 1.seconds.future();
-      final response = await _firestore
-          .collection('chatRooms')
-          .where('user_uids', arrayContains: uid)
-          .get();
-      if (response.docs.isEmpty) {
-        yield [];
-      } else {
-        yield response.docs.map((e) => ChatRoom.fromJson(e.data())).toList();
-      }
-    }
   }
 
   Future<void> createChatRoom(ChatRoom chatRoom) async {

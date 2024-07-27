@@ -18,6 +18,36 @@ _$MessageImpl _$$MessageImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
     );
 
+const _$$MessageImplFieldMap = <String, String>{
+  'roomId': 'roomId',
+  'message': 'message',
+  'createdAt': 'createdAt',
+  'sender': 'sender',
+  'image': 'image',
+  'file': 'file',
+  'id': 'id',
+};
+
+// ignore: unused_element
+abstract class _$$MessageImplPerFieldToJson {
+  // ignore: unused_element
+  static Object? roomId(String? instance) => instance;
+  // ignore: unused_element
+  static Object? message(String? instance) => instance;
+  // ignore: unused_element
+  static Object? createdAt(DateTime? instance) =>
+      _$JsonConverterToJson<int, DateTime>(
+          instance, const EpochDateTimeConverter().toJson);
+  // ignore: unused_element
+  static Object? sender(String? instance) => instance;
+  // ignore: unused_element
+  static Object? image(String? instance) => instance;
+  // ignore: unused_element
+  static Object? file(String? instance) => instance;
+  // ignore: unused_element
+  static Object? id(String? instance) => instance;
+}
+
 Map<String, dynamic> _$$MessageImplToJson(_$MessageImpl instance) =>
     <String, dynamic>{
       'roomId': instance.roomId,
