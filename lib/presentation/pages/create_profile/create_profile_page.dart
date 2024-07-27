@@ -8,7 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:uuid/uuid.dart';
 
 @RoutePage()
 class CreateProfilePage extends StatefulWidget {
@@ -46,17 +45,19 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
             avatar: avatarResponse,
           );
           await _userRemoteDataSource.updateProfile(user);
+          await _userRemoteDataSource.updateFcmToken();
+
           setState(() {
             _loading = false;
           });
           context.router.pushAndPopUntil(
-            LoadingRoute(),
+            const LoadingRoute(),
             predicate: (route) => false,
           );
         },
         child: _loading
-            ? CircularProgressIndicator()
-            : FaIcon(
+            ? const CircularProgressIndicator()
+            : const FaIcon(
                 FontAwesomeIcons.arrowRight,
               ),
       ),
@@ -64,15 +65,15 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "Profile",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 24,
               ),
             ),
-            Text("Complete your profile to continue"),
-            SizedBox(
+            const Text("Complete your profile to continue"),
+            const SizedBox(
               height: 24,
             ),
             GestureDetector(
@@ -111,7 +112,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                             )
                           ],
                         ),
-                        child: FaIcon(
+                        child: const FaIcon(
                           FontAwesomeIcons.camera,
                           size: 18,
                         ),
@@ -121,20 +122,20 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 24,
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 36),
+              margin: const EdgeInsets.symmetric(horizontal: 36),
               child: TextField(
                 controller: _nameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   label: Text("Name"),
                   hintText: "e.g John",
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 82,
             ),
           ],

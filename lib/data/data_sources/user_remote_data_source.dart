@@ -4,6 +4,7 @@ import 'package:chatico/common/services/upload_service.dart';
 import 'package:chatico/data/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 
@@ -11,6 +12,7 @@ class UserRemoteDataSource {
   final _firestore = FirebaseFirestore.instance.collection("users");
   final _storage = FirebaseStorage.instance.ref();
   final _auth = FirebaseAuth.instance;
+  final _messaging = FirebaseMessaging.instance;
   Future<void> updateProfile(UserModel user) async {
     if (user.name != null) {
       await _auth.currentUser?.updateDisplayName(user.name);
@@ -72,5 +74,16 @@ class UserRemoteDataSource {
     final response =
         await uploadService.getDownloadUrl("images/users/$uid/avatar.png");
     return response;
+  }
+
+  Future<void> updateFcmToken() async {
+    final fcmToken = await _messaging.getToken();
+    final uid = _auth.currentUser!.uid;
+    await _firestore.doc(uid).set(
+      {
+        'fcmToken': fcmToken,
+      },
+      SetOptions(merge: true),
+    );
   }
 }
