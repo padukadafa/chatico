@@ -20,6 +20,7 @@ class ChatListPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Chatico"),
+          backgroundColor: Colors.amber,
           actions: [
             PopupMenuButton(
               iconSize: 28,

@@ -51,8 +51,10 @@ class MessageList extends StatelessWidget {
         }
         onMessageUpdate(snapshot.data!);
         if (snapshot.data?.isEmpty ?? true) {
-          return const Center(
-            child: Text("Send new message to start conversation"),
+          return const Expanded(
+            child: Center(
+              child: Text("Send new message to start conversation"),
+            ),
           );
         }
 
