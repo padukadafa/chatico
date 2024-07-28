@@ -27,10 +27,11 @@ class ChatAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _ChatAppBarState extends State<ChatAppBar> {
   List<Message> _searchResult = [];
   bool _showSearch = false;
+  int _currentIndex = 0;
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
+    _searchResult = [];
   }
 
   @override
@@ -44,11 +45,18 @@ class _ChatAppBarState extends State<ChatAppBar> {
                 hintText: "Search...",
               ),
               onChanged: (value) {
-                _searchResult = widget.messages
-                    .where((m) => m.message!.toLowerCase().contains(value))
-                    .toList();
+                setState(() {
+                  _currentIndex = 0;
+
+                  _searchResult = widget.messages
+                      .where((m) => m.message!.toLowerCase().contains(value))
+                      .toList();
+                });
+
                 if (_searchResult.isNotEmpty) {
-                  final index = widget.messages.indexOf(_searchResult[0]);
+                  final index = _currentIndex =
+                      widget.messages.indexOf(_searchResult[_currentIndex]);
+
                   widget.scrollController.scrollToIndex(index);
                   widget.scrollController.highlight(index);
                 }
@@ -64,32 +72,78 @@ class _ChatAppBarState extends State<ChatAppBar> {
                 Text(widget.intercolutor.name ?? ""),
               ],
             ),
-      actions: [
-        _showSearch
-            ? IconButton(
-                onPressed: () {
-                  widget.scrollController.cancelAllHighlights();
+      leading: _showSearch
+          ? IconButton(
+              onPressed: () {
+                widget.scrollController.cancelAllHighlights();
 
+                setState(() {
+                  _showSearch = false;
+                  _searchResult = [];
+                });
+              },
+              icon: const Icon(
+                Icons.close,
+                size: 21,
+              ),
+            )
+          : null,
+      actions: [
+        if (_searchResult.isNotEmpty && _showSearch)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                onPressed: () {
+                  if (_currentIndex > _searchResult.length - 2) {
+                    return;
+                  }
                   setState(() {
-                    _showSearch = false;
+                    _currentIndex++;
                   });
+                  final index =
+                      widget.messages.indexOf(_searchResult[_currentIndex]);
+                  widget.scrollController.scrollToIndex(index);
+                  widget.scrollController.highlight(index);
                 },
                 icon: const Icon(
-                  Icons.close,
-                  size: 21,
-                ),
-              )
-            : IconButton(
-                onPressed: () {
-                  setState(() {
-                    _showSearch = true;
-                  });
-                },
-                icon: const FaIcon(
-                  FontAwesomeIcons.magnifyingGlass,
-                  size: 21,
+                  Icons.arrow_upward,
+                  size: 18,
                 ),
               ),
+              Text("${_currentIndex + 1}/${_searchResult.length}"),
+              IconButton(
+                onPressed: () {
+                  if (_currentIndex == 0) {
+                    return;
+                  }
+                  setState(() {
+                    _currentIndex--;
+                  });
+                  final index =
+                      widget.messages.indexOf(_searchResult[_currentIndex]);
+                  widget.scrollController.scrollToIndex(index);
+                  widget.scrollController.highlight(index);
+                },
+                icon: const Icon(
+                  Icons.arrow_downward,
+                  size: 18,
+                ),
+              ),
+            ],
+          ),
+        if (!_showSearch)
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _showSearch = true;
+              });
+            },
+            icon: const FaIcon(
+              FontAwesomeIcons.magnifyingGlass,
+              size: 21,
+            ),
+          ),
       ],
     );
   }
