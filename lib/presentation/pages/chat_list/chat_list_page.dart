@@ -7,6 +7,7 @@ import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 @RoutePage()
 class ChatListPage extends StatelessWidget {
@@ -96,24 +97,31 @@ class ChatListPage extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  trailing: Visibility(
-                    visible: chatRoom.unreadedMessage != 0 &&
-                        chatRoom.lastMessage?.sender !=
-                            FirebaseAuth.instance.currentUser?.uid,
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: colorScheme.primary,
-                      ),
-                      child: Text(
-                        chatRoom.unreadedMessage.toString(),
-                        style: TextStyle(
-                          color: colorScheme.onPrimary,
-                          fontSize: 12,
+                  trailing: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Visibility(
+                        visible: chatRoom.unreadedMessage != 0 &&
+                            chatRoom.lastMessage?.sender !=
+                                FirebaseAuth.instance.currentUser?.uid,
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: colorScheme.primary,
+                          ),
+                          child: Text(
+                            chatRoom.unreadedMessage.toString(),
+                            style: TextStyle(
+                              color: colorScheme.onPrimary,
+                              fontSize: 12,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      Text(DateFormat("hh:mm")
+                          .format(chatRoom.lastMessage!.createdAt!)),
+                    ],
                   ),
                 );
               },
