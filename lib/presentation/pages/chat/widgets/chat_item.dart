@@ -3,6 +3,7 @@ import 'package:chatico/data/models/chat_room.dart';
 import 'package:chatico/data/models/message.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:super_context_menu/super_context_menu.dart';
@@ -24,21 +25,27 @@ class ChatItem extends StatelessWidget {
       menuProvider: (MenuRequest request) {
         return Menu(
           children: [
+            if (isSender)
+              MenuAction(
+                callback: () async {
+                  await ChatRemoteDataSource()
+                      .deleteMessage(chatRoom.roomId!, message.id!);
+                },
+                title: "Delete",
+                image: MenuImage.icon(
+                  FontAwesomeIcons.trash,
+                ),
+                attributes: const MenuActionAttributes(
+                  destructive: true,
+                ),
+              ),
             MenuAction(
               callback: () async {
-                await ChatRemoteDataSource()
-                    .deleteMessage(chatRoom.roomId!, message.id!);
+                if (message.message != null) {
+                  await Clipboard.setData(
+                      ClipboardData(text: message.message!));
+                }
               },
-              title: "Delete",
-              image: MenuImage.icon(
-                FontAwesomeIcons.trash,
-              ),
-              attributes: const MenuActionAttributes(
-                destructive: true,
-              ),
-            ),
-            MenuAction(
-              callback: () {},
               title: "Copy",
               image: MenuImage.icon(
                 FontAwesomeIcons.copy,

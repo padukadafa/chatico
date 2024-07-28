@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chatico/common/utils/utils.dart';
 import 'package:chatico/common/widgets/user_avatar.dart';
+import 'package:chatico/core/extension/date_time.dart';
 import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/data/models/chat_room.dart';
 import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
@@ -119,8 +120,7 @@ class ChatListPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text(DateFormat("hh:mm")
-                          .format(chatRoom.lastMessage!.createdAt!)),
+                      Text(chatRoom.lastMessage!.createdAt!.differentFromNow()),
                     ],
                   ),
                 );
