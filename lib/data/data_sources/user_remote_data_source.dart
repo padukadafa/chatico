@@ -69,7 +69,10 @@ class UserRemoteDataSource {
     return response.docs.map((e) => UserModel.fromJson(e.data())).toList();
   }
 
-  Future<String> getUserAvatar(String uid) async {
+  Future<String> getUserAvatar(String? uid) async {
+    if (uid == null) {
+      return "";
+    }
     final uploadService = UploadService(_storage);
     final response =
         await uploadService.getDownloadUrl("images/users/$uid/avatar.png");

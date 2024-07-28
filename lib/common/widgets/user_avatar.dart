@@ -4,33 +4,51 @@ import 'package:flutter/material.dart';
 
 class UserAvatar extends StatelessWidget {
   final double? radius;
-  final String uid;
-  const UserAvatar(this.uid, {super.key, this.radius});
+  final String? uid;
+  final String? url;
+  const UserAvatar({
+    this.uid,
+    super.key,
+    this.radius,
+    this.url,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-        future: UserRemoteDataSource().getUserAvatar(uid),
-        builder: (context, snapshot) {
-          return CachedNetworkImage(
-            imageUrl: snapshot.data ?? "",
-            imageBuilder: (context, imageProvider) {
-              return CircleAvatar(
-                backgroundImage: imageProvider,
-                radius: radius,
-              );
-            },
-            errorWidget: (context, url, error) {
-              return CircleAvatar(
-                radius: radius,
-              );
-            },
-            placeholder: (context, url) {
-              return CircleAvatar(
-                radius: radius,
-              );
-            },
-          );
-        });
+    if (url != null) {
+      return _userAvatar(url!);
+    }
+    if (uid != null) {
+      return FutureBuilder<String>(
+          future: UserRemoteDataSource().getUserAvatar(uid),
+          builder: (context, snapshot) {
+            return _userAvatar(snapshot.data!);
+          });
+    }
+    return CircleAvatar(
+      radius: radius,
+    );
+  }
+
+  Widget _userAvatar(String url) {
+    return CachedNetworkImage(
+      imageUrl: url,
+      imageBuilder: (context, imageProvider) {
+        return CircleAvatar(
+          backgroundImage: imageProvider,
+          radius: radius,
+        );
+      },
+      errorWidget: (context, url, error) {
+        return CircleAvatar(
+          radius: radius,
+        );
+      },
+      placeholder: (context, url) {
+        return CircleAvatar(
+          radius: radius,
+        );
+      },
+    );
   }
 }

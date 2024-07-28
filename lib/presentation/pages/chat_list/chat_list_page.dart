@@ -83,12 +83,19 @@ class ChatListPage extends StatelessWidget {
                       chatRoom: chatRoom,
                     ));
                   },
-                  leading: Hero(
-                    tag: "intercolutorAvatar",
-                    child: UserAvatar(intercolutor.uid),
+                  leading: UserAvatar(
+                    url: intercolutor.avatar ?? "",
                   ),
-                  title: Text(intercolutor.name ?? ""),
-                  subtitle: Text(chatRoom.lastMessage?.message ?? ""),
+                  title: Text(
+                    intercolutor.name ?? "",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    chatRoom.lastMessage?.message ?? "",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   trailing: Visibility(
                     visible: chatRoom.unreadedMessage != 0 &&
                         chatRoom.lastMessage?.sender !=

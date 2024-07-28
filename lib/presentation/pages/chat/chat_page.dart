@@ -35,10 +35,7 @@ class _ChatPageState extends State<ChatPage> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Hero(
-              tag: "intercolutorAvatar",
-              child: UserAvatar(intercolutor.uid),
-            ),
+            UserAvatar(url: intercolutor.avatar),
             SizedBox(
               width: 16,
             ),
