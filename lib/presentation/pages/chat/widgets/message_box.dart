@@ -19,40 +19,70 @@ class MessageBox extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: 16,
+        horizontal: 12,
         vertical: 4,
       ),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            blurRadius: 10,
-          )
-        ],
-        color: colorScheme.surfaceBright,
-      ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Expanded(
-            child: TextField(
-              controller: messageController,
-              decoration: const InputDecoration(
-                hintText: "Message",
-                border: InputBorder.none,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(26),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    blurRadius: 8,
+                  ),
+                ],
               ),
-              onSubmitted: (val) {
-                _sendMessage(val);
-              },
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: TextField(
+                      controller: messageController,
+                      decoration: const InputDecoration(
+                        hintText: "Message",
+                        border: InputBorder.none,
+                      ),
+                      maxLines: 4,
+                      minLines: 1,
+                      onSubmitted: (val) {
+                        _sendMessage(val);
+                      },
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const FaIcon(
+                      FontAwesomeIcons.paperclip,
+                      color: Colors.grey,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
+          const SizedBox(
+            width: 8,
+          ),
+          IconButton.filled(
+            onPressed: () {
               _sendMessage(messageController.text);
             },
-            child: const FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.solidPaperPlane,
+              color: Colors.white,
             ),
-          )
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.amber,
+            ),
+          ),
         ],
       ),
     );

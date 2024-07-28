@@ -9,6 +9,7 @@ import 'package:chatico/presentation/pages/chat/widgets/chat_item.dart';
 import 'package:chatico/presentation/pages/chat/widgets/message_box.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -37,16 +38,26 @@ class _ChatPageState extends State<ChatPage> {
     final intercolutor = Utils.getIntercolutor(widget.chatRoom.users);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.amber,
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             UserAvatar(url: intercolutor.avatar),
-            SizedBox(
+            const SizedBox(
               width: 16,
             ),
             Text(intercolutor.name ?? ""),
           ],
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const FaIcon(
+              FontAwesomeIcons.magnifyingGlass,
+              size: 21,
+            ),
+          ),
+        ],
       ),
       body: Stack(
         children: [

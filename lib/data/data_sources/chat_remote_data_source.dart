@@ -45,6 +45,9 @@ class ChatRemoteDataSource {
 
   Future<void> sendMessage(ChatRoom chatRoom,
       {String? message, File? image, File? file}) async {
+    if (message?.isEmpty ?? true) {
+      return;
+    }
     final uploadService = UploadService(_storage);
     final messageId = const UuidV4().generate();
     final roomId = chatRoom.roomId!;
