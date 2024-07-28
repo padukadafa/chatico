@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chatico/common/utils/utils.dart';
 import 'package:chatico/common/widgets/user_avatar.dart';
+import 'package:chatico/core/extension/date_time.dart';
 import 'package:chatico/data/data_sources/chat_remote_data_source.dart';
 import 'package:chatico/data/models/chat_room.dart';
 import 'package:chatico/data/models/message.dart';
@@ -8,6 +9,7 @@ import 'package:chatico/presentation/pages/chat/widgets/chat_item.dart';
 import 'package:chatico/presentation/pages/chat/widgets/message_box.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
@@ -88,15 +90,44 @@ class _ChatPageState extends State<ChatPage> {
                     );
                   }
                   ChatRemoteDataSource().resetUnreadedMessage(widget.chatRoom);
-                  return ListView.builder(
-                    reverse: true,
+                  return GroupedListView(
                     controller: scrollController,
-                    itemCount: snapshot.data?.length ?? 0,
-                    itemBuilder: (context, index) {
+                    elements: snapshot.data!,
+                    reverse: true,
+                    stickyHeaderBackgroundColor: Colors.transparent,
+                    useStickyGroupSeparators: true,
+                    groupBy: (e) => e.createdAt!.groupedDifferentFromNow(),
+                    indexedItemBuilder: (context, element, index) {
                       return ChatItem(
                         message: snapshot.data![index],
                         chatRoom: widget.chatRoom,
                       );
+                    },
+                    groupStickyHeaderBuilder: (element) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(6),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    blurRadius: 6,
+                                  ),
+                                ]),
+                            child: Text(
+                                element.createdAt!.groupedDifferentFromNow()),
+                          ),
+                        ],
+                      );
+                    },
+                    groupSeparatorBuilder: (element) {
+                      return const SizedBox.shrink();
                     },
                   );
                 },
