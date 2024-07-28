@@ -30,6 +30,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   freezed_annotation: ^2.4.4
   get_it: ^7.7.0
+  google_nav_bar: ^5.0.6
   googleapis: ^13.2.0
   googleapis_auth: ^1.6.0
   grouped_list: ^6.0.0
@@ -67,3 +68,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/wallpapers/
+    - .env
