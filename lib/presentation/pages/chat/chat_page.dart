@@ -3,9 +3,12 @@ import 'package:chatico/common/utils/utils.dart';
 import 'package:chatico/common/widgets/user_avatar.dart';
 import 'package:chatico/data/data_sources/chat_remote_data_source.dart';
 import 'package:chatico/data/models/chat_room.dart';
+import 'package:chatico/data/models/message.dart';
 import 'package:chatico/presentation/pages/chat/widgets/chat_item.dart';
 import 'package:chatico/presentation/pages/chat/widgets/message_box.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class ChatPage extends StatefulWidget {
@@ -57,9 +60,31 @@ class _ChatPageState extends State<ChatPage> {
                 stream: ChatRemoteDataSource()
                     .getMessages(widget.chatRoom.roomId ?? ""),
                 builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return ListView.builder(
+                      controller: scrollController,
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return Skeletonizer(
+                          containersColor: Colors.white,
+                          enabled: true,
+                          child: ChatItem(
+                            message: Message(
+                              message: BoneMock.paragraph,
+                              createdAt: DateTime.now(),
+                              sender: (index == 2)
+                                  ? FirebaseAuth.instance.currentUser?.uid
+                                  : "",
+                            ),
+                            chatRoom: ChatRoom(),
+                          ),
+                        );
+                      },
+                    );
+                  }
                   if (snapshot.data?.isEmpty ?? true) {
                     return const Center(
-                      child: Text("Send new message to stasrt conversation"),
+                      child: Text("Send new message to start conversation"),
                     );
                   }
                   ChatRemoteDataSource().resetUnreadedMessage(widget.chatRoom);
