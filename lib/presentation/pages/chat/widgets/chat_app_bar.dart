@@ -54,7 +54,7 @@ class _ChatAppBarState extends State<ChatAppBar> {
                 });
 
                 if (_searchResult.isNotEmpty) {
-                  final index = _currentIndex =
+                  final index =
                       widget.messages.indexOf(_searchResult[_currentIndex]);
 
                   widget.scrollController.scrollToIndex(index);
