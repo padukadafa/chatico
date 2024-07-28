@@ -59,15 +59,16 @@ class ChatListPage extends StatelessWidget {
           child: const FaIcon(FontAwesomeIcons.solidMessage),
         ),
         body: FirestoreBuilder(
-          ref: chatRoomRef,
+          ref: chatRoomRef.whereFieldPath("user_uids",
+              arrayContains: FirebaseAuth.instance.currentUser?.uid),
           builder: (context, snapshot, child) {
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
             if (snapshot.data!.docs.isEmpty) {
-              return Center(
+              return const Center(
                 child: Text("No chat available"),
               );
             }
@@ -121,7 +122,10 @@ class ChatListPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text(chatRoom.lastMessage!.createdAt!.differentFromNow()),
+                      Text(
+                        chatRoom.lastMessage?.createdAt?.differentFromNow() ??
+                            "",
+                      ),
                     ],
                   ),
                 );
