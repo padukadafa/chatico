@@ -50,52 +50,56 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    "assets/images/wallpapers/aesthetic_hearts.jpeg"),
-                fit: BoxFit.cover,
+          SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                      "assets/images/wallpapers/aesthetic_hearts.jpeg"),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
           Column(
             children: [
-              Expanded(
-                child: StreamBuilder(
-                  stream: ChatRemoteDataSource()
-                      .getMessages(widget.chatRoom.roomId ?? ""),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return ListView.builder(
+              StreamBuilder(
+                stream: ChatRemoteDataSource()
+                    .getMessages(widget.chatRoom.roomId ?? ""),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Expanded(
+                      child: ListView.builder(
                         controller: scrollController,
-                        itemCount: 4,
+                        itemCount: 8,
                         itemBuilder: (context, index) {
                           return Skeletonizer(
                             containersColor: Colors.white,
                             enabled: true,
                             child: ChatItem(
                               message: Message(
-                                message: BoneMock.paragraph,
+                                message: BoneMock.fullName,
                                 createdAt: DateTime.now(),
-                                sender: (index == 2)
+                                sender: (index % 3 == 0)
                                     ? FirebaseAuth.instance.currentUser?.uid
                                     : "",
                               ),
-                              chatRoom: ChatRoom(),
+                              chatRoom: const ChatRoom(),
                             ),
                           );
                         },
-                      );
-                    }
-                    if (snapshot.data?.isEmpty ?? true) {
-                      return const Center(
-                        child: Text("Send new message to start conversation"),
-                      );
-                    }
-                    ChatRemoteDataSource()
-                        .resetUnreadedMessage(widget.chatRoom);
-                    return GroupedListView(
+                      ),
+                    );
+                  }
+                  if (snapshot.data?.isEmpty ?? true) {
+                    return const Center(
+                      child: Text("Send new message to start conversation"),
+                    );
+                  }
+                  ChatRemoteDataSource().resetUnreadedMessage(widget.chatRoom);
+                  return Expanded(
+                    child: GroupedListView(
                       controller: scrollController,
                       elements: snapshot.data!,
                       reverse: true,
@@ -134,9 +138,9 @@ class _ChatPageState extends State<ChatPage> {
                       groupSeparatorBuilder: (element) {
                         return const SizedBox.shrink();
                       },
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
               MessageBox(
                 messageController: messageController,
