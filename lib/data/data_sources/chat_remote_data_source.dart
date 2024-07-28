@@ -90,8 +90,10 @@ class ChatRemoteDataSource {
       message: message,
       id: messageId,
     );
-    await messageRef.update(msg.toJson());
     final intercolutor = Utils.getIntercolutor(chatRoom.users);
+    await updateChatRoom(chatRoom, msg);
+    await messageRef.update(msg.toJson());
+
     await NotificationService.sendNotification(
       NotificationModel(
         body: msg.message,
@@ -104,7 +106,6 @@ class ChatRemoteDataSource {
         title: _auth.currentUser?.displayName,
       ),
     );
-    await updateChatRoom(chatRoom, msg);
   }
 
   Future<void> createChatRoom(ChatRoom chatRoom) async {
