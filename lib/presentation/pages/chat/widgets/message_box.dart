@@ -2,6 +2,7 @@ import 'package:chatico/data/data_sources/chat_remote_data_source.dart';
 import 'package:chatico/data/models/chat_room.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class MessageBox extends StatelessWidget {
   const MessageBox({
@@ -58,9 +59,12 @@ class MessageBox extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      final List<AssetEntity>? result =
+                          await AssetPicker.pickAssets(context);
+                    },
                     icon: const FaIcon(
-                      FontAwesomeIcons.paperclip,
+                      FontAwesomeIcons.images,
                       color: Colors.grey,
                     ),
                   )
