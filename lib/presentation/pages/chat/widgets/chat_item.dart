@@ -59,22 +59,25 @@ class ChatItem extends StatelessWidget {
         child: Container(
           margin: isSender
               ? const EdgeInsets.only(
-                  top: 16,
+                  top: 4,
                   left: 86,
                   right: 16,
+                  bottom: 4,
                 )
               : const EdgeInsets.only(
-                  top: 16,
+                  top: 4,
                   left: 16,
                   right: 86,
+                  bottom: 4,
                 ),
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
           decoration: BoxDecoration(
             color: isSender ? Colors.amber[100] : colorScheme.surfaceBright,
             borderRadius: BorderRadius.circular(6),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment:
+                isSender ? CrossAxisAlignment.start : CrossAxisAlignment.end,
             children: [
               Text(
                 message.message ?? "",
@@ -82,7 +85,13 @@ class ChatItem extends StatelessWidget {
               const SizedBox(
                 height: 6,
               ),
-              Text(DateFormat("hh:mm").format(message.createdAt!))
+              Text(
+                DateFormat("hh:mm").format(message.createdAt!),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ),
             ],
           ),
         ),
