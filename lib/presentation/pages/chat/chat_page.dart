@@ -48,97 +48,103 @@ class _ChatPageState extends State<ChatPage> {
           ],
         ),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/wallpapers/aesthetic_hearts.jpeg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: StreamBuilder(
-                stream: ChatRemoteDataSource()
-                    .getMessages(widget.chatRoom.roomId ?? ""),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return ListView.builder(
-                      controller: scrollController,
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return Skeletonizer(
-                          containersColor: Colors.white,
-                          enabled: true,
-                          child: ChatItem(
-                            message: Message(
-                              message: BoneMock.paragraph,
-                              createdAt: DateTime.now(),
-                              sender: (index == 2)
-                                  ? FirebaseAuth.instance.currentUser?.uid
-                                  : "",
-                            ),
-                            chatRoom: ChatRoom(),
-                          ),
-                        );
-                      },
-                    );
-                  }
-                  if (snapshot.data?.isEmpty ?? true) {
-                    return const Center(
-                      child: Text("Send new message to start conversation"),
-                    );
-                  }
-                  ChatRemoteDataSource().resetUnreadedMessage(widget.chatRoom);
-                  return GroupedListView(
-                    controller: scrollController,
-                    elements: snapshot.data!,
-                    reverse: true,
-                    stickyHeaderBackgroundColor: Colors.transparent,
-                    useStickyGroupSeparators: true,
-                    groupBy: (e) => e.createdAt!.groupedDifferentFromNow(),
-                    indexedItemBuilder: (context, element, index) {
-                      return ChatItem(
-                        message: snapshot.data![index],
-                        chatRoom: widget.chatRoom,
-                      );
-                    },
-                    groupStickyHeaderBuilder: (element) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(top: 8),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(6),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.2),
-                                    blurRadius: 6,
-                                  ),
-                                ]),
-                            child: Text(
-                                element.createdAt!.groupedDifferentFromNow()),
-                          ),
-                        ],
-                      );
-                    },
-                    groupSeparatorBuilder: (element) {
-                      return const SizedBox.shrink();
-                    },
-                  );
-                },
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                    "assets/images/wallpapers/aesthetic_hearts.jpeg"),
+                fit: BoxFit.cover,
               ),
             ),
-            MessageBox(
-              messageController: messageController,
-              chatRoom: widget.chatRoom,
-            )
-          ],
-        ),
+          ),
+          Column(
+            children: [
+              Expanded(
+                child: StreamBuilder(
+                  stream: ChatRemoteDataSource()
+                      .getMessages(widget.chatRoom.roomId ?? ""),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return ListView.builder(
+                        controller: scrollController,
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return Skeletonizer(
+                            containersColor: Colors.white,
+                            enabled: true,
+                            child: ChatItem(
+                              message: Message(
+                                message: BoneMock.paragraph,
+                                createdAt: DateTime.now(),
+                                sender: (index == 2)
+                                    ? FirebaseAuth.instance.currentUser?.uid
+                                    : "",
+                              ),
+                              chatRoom: ChatRoom(),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    if (snapshot.data?.isEmpty ?? true) {
+                      return const Center(
+                        child: Text("Send new message to start conversation"),
+                      );
+                    }
+                    ChatRemoteDataSource()
+                        .resetUnreadedMessage(widget.chatRoom);
+                    return GroupedListView(
+                      controller: scrollController,
+                      elements: snapshot.data!,
+                      reverse: true,
+                      stickyHeaderBackgroundColor: Colors.transparent,
+                      useStickyGroupSeparators: true,
+                      groupBy: (e) => e.createdAt!.groupedDifferentFromNow(),
+                      indexedItemBuilder: (context, element, index) {
+                        return ChatItem(
+                          message: snapshot.data![index],
+                          chatRoom: widget.chatRoom,
+                        );
+                      },
+                      groupStickyHeaderBuilder: (element) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 8),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(6),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      blurRadius: 6,
+                                    ),
+                                  ]),
+                              child: Text(
+                                  element.createdAt!.groupedDifferentFromNow()),
+                            ),
+                          ],
+                        );
+                      },
+                      groupSeparatorBuilder: (element) {
+                        return const SizedBox.shrink();
+                      },
+                    );
+                  },
+                ),
+              ),
+              MessageBox(
+                messageController: messageController,
+                chatRoom: widget.chatRoom,
+              )
+            ],
+          ),
+        ],
       ),
     );
   }
