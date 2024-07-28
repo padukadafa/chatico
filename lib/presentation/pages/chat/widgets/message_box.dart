@@ -61,7 +61,12 @@ class MessageBox extends StatelessWidget {
                   IconButton(
                     onPressed: () async {
                       final List<AssetEntity>? result =
-                          await AssetPicker.pickAssets(context);
+                          await AssetPicker.pickAssets(
+                        context,
+                        pickerConfig: const AssetPickerConfig(
+                          requestType: RequestType.image,
+                        ),
+                      );
                     },
                     icon: const FaIcon(
                       FontAwesomeIcons.images,
