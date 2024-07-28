@@ -101,10 +101,8 @@ class FriendsListPage extends StatelessWidget {
                               ),
                             );
                           },
-                          leading: Hero(
-                            tag: "intercolutorAvatar",
-                            child: UserAvatar(snapshot.data![index].uid),
-                          ),
+                          leading:
+                              UserAvatar(url: snapshot.data![index].avatar),
                           title: Text(snapshot.data![index].name ?? ""),
                         );
                       },
