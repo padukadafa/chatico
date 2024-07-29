@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/data/data_sources/db/notification_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,6 +29,8 @@ abstract class RegisterModul {
   FirebaseMessaging get firebaseMessaging => FirebaseMessaging.instance;
   @injectable
   AppRouter get appRouter => AppRouter();
+  @injectable
+  AwesomeNotifications get awesomeNotification => AwesomeNotifications();
   @preResolve
   Future<SharedPreferences> get sharedPreferences =>
       SharedPreferences.getInstance();

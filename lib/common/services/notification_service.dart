@@ -5,6 +5,7 @@ import 'package:chatico/common/values/app_constants.dart';
 import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/data/data_sources/chat_remote_data_source.dart';
 import 'package:chatico/data/models/chat_room.dart';
+import 'package:chatico/di.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,10 @@ import 'package:get_it/get_it.dart';
 import 'package:chatico/data/models/notification.dart' as chatico;
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+@injectable
 class NotificationService {
   static requestPermission() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -82,36 +86,41 @@ class NotificationService {
   @pragma("vm:entry-point")
   static Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
-    final title = message.data['title'];
-    final body = message.data['body'];
-    const String channel = "message";
-    final summary = message.data['summary'];
-    final roomId = message.data['roomId'];
-
-    AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          id: UniqueKey().hashCode,
-          channelKey: channel,
-          color: Colors.white,
-          title: title,
-          body: body,
-          notificationLayout: NotificationLayout.MessagingGroup,
-          wakeUpScreen: true,
-          fullScreenIntent: true,
-          summary: summary,
-          groupKey: roomId,
-          backgroundColor: Colors.blue,
-        ),
-        actionButtons: [
-          NotificationActionButton(
-            key: 'reply',
-            label: "Reply",
+    if (getIt<SharedPreferences>().getBool(AppConstants.SHOW_NOTIFICATION) ??
+        true) {
+      final title = message.data['title'];
+      final body = message.data['body'];
+      const String channel = "message";
+      final summary = message.data['summary'];
+      final roomId = message.data['roomId'];
+      AwesomeNotifications().createNotification(
+          content: NotificationContent(
+            id: UniqueKey().hashCode,
+            channelKey: channel,
+            color: Colors.white,
+            title: title,
+            body: body,
+            notificationLayout: NotificationLayout.MessagingGroup,
+            wakeUpScreen: true,
+            fullScreenIntent: true,
+            summary: summary,
+            groupKey: roomId,
+            backgroundColor: Colors.blue,
           ),
-        ]);
+          actionButtons: [
+            NotificationActionButton(
+              key: 'reply',
+              label: "Reply",
+            ),
+          ]);
+    }
   }
 
   static Future<void> listenNotification() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      if (!(getIt<SharedPreferences>()
+              .getBool(AppConstants.SHOW_NOTIFICATION) ??
+          false)) return;
       if (GetIt.I<AppRouter>().current.name == "ChatRoute") {
         return;
       }

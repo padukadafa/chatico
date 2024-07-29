@@ -111,7 +111,9 @@ class _SettingsShowNotificationState extends State<SettingsShowNotification> {
   late bool _showNotification;
   @override
   void initState() {
-    // TODO: implement initState
+    _showNotification =
+        getIt<SharedPreferences>().getBool(AppConstants.SHOW_NOTIFICATION) ??
+            false;
     super.initState();
   }
 
@@ -120,8 +122,11 @@ class _SettingsShowNotificationState extends State<SettingsShowNotification> {
     return ListTile(
       title: Text("Show Notification"),
       trailing: Switch(
-        value: true,
+        value: _showNotification,
         onChanged: (val) async {
+          setState(() {
+            _showNotification = val;
+          });
           getIt<SharedPreferences>()
               .setBool(AppConstants.SHOW_NOTIFICATION, val);
         },

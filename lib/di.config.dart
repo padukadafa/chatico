@@ -8,6 +8,8 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:awesome_notifications/awesome_notifications.dart' as _i1006;
+import 'package:chatico/common/services/notification_service.dart' as _i289;
 import 'package:chatico/core/router/app_router.dart' as _i427;
 import 'package:chatico/data/data_sources/chat_remote_data_source.dart'
     as _i685;
@@ -37,12 +39,15 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final registerModul = _$RegisterModul();
+    gh.factory<_i289.NotificationService>(() => _i289.NotificationService());
     gh.factory<_i974.FirebaseFirestore>(() => registerModul.firebaseFirestore);
     gh.factory<_i59.FirebaseAuth>(() => registerModul.firebaseAuth);
     gh.factory<_i457.FirebaseStorage>(() => registerModul.firebaseStorage);
     gh.factory<_i345.FirebaseDatabase>(() => registerModul.firebaseDatabase);
     gh.factory<_i892.FirebaseMessaging>(() => registerModul.firebaseMessaging);
     gh.factory<_i427.AppRouter>(() => registerModul.appRouter);
+    gh.factory<_i1006.AwesomeNotifications>(
+        () => registerModul.awesomeNotification);
     await gh.factoryAsync<_i460.SharedPreferences>(
       () => registerModul.sharedPreferences,
       preResolve: true,

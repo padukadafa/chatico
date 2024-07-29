@@ -14,8 +14,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  NotificationService.initilizeNotifification();
   await configureDependencies();
+  await NotificationService.initilizeNotifification();
   await dotenv.load(fileName: '.env');
   runApp(MainApp());
 }
