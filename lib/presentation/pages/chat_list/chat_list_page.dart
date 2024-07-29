@@ -76,8 +76,13 @@ class ChatListPage extends StatelessWidget {
         child: const FaIcon(FontAwesomeIcons.solidMessage),
       ),
       body: FirestoreBuilder(
-        ref: chatRoomRef.whereFieldPath("user_uids",
-            arrayContains: FirebaseAuth.instance.currentUser?.uid),
+        ref: chatRoomRef
+            .whereFieldPath("user_uids",
+                arrayContains: FirebaseAuth.instance.currentUser?.uid)
+            .orderByFieldPath(
+              "lastMessage.createdAt",
+              descending: true,
+            ),
         builder: (context, snapshot, child) {
           if (!snapshot.hasData) {
             return const Center(
