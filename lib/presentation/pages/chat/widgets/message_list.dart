@@ -4,6 +4,7 @@ import 'package:chatico/data/models/chat_room.dart';
 import 'package:chatico/data/models/message.dart';
 import 'package:chatico/presentation/pages/chat/widgets/chat_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -63,10 +64,12 @@ class MessageList extends StatelessWidget {
           child: GroupedListView(
             controller: scrollController,
             elements: snapshot.data!,
-            reverse: true,
             stickyHeaderBackgroundColor: Colors.transparent,
             useStickyGroupSeparators: true,
+            reverse: true,
+            dragStartBehavior: DragStartBehavior.down,
             groupBy: (e) => e.createdAt!.groupedDifferentFromNow(),
+            groupComparator: (value1, value2) => value2.compareTo(value1),
             indexedItemBuilder: (context, element, index) {
               return AutoScrollTag(
                 index: index,
