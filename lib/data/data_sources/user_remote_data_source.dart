@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:chatico/common/services/upload_service.dart';
+import 'package:chatico/services/upload_service.dart';
 import 'package:chatico/data/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

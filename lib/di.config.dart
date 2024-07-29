@@ -9,7 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:awesome_notifications/awesome_notifications.dart' as _i1006;
-import 'package:chatico/common/services/notification_service.dart' as _i289;
+import 'package:chatico/services/notification_service.dart' as _i289;
 import 'package:chatico/core/router/app_router.dart' as _i427;
 import 'package:chatico/data/data_sources/chat_remote_data_source.dart'
     as _i685;

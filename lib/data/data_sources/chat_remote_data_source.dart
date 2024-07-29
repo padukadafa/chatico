@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
-import 'package:chatico/common/services/notification_service.dart';
-import 'package:chatico/common/services/upload_service.dart';
+import 'package:chatico/services/notification_service.dart';
+import 'package:chatico/services/upload_service.dart';
 import 'package:chatico/common/utils/utils.dart';
 import 'package:chatico/data/data_sources/user_remote_data_source.dart';
 import 'package:chatico/data/models/chat_room.dart';

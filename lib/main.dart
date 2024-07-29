@@ -1,4 +1,4 @@
-import 'package:chatico/common/services/notification_service.dart';
+import 'package:chatico/services/notification_service.dart';
 import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/di.dart';
 import 'package:flutter/material.dart';

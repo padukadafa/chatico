@@ -120,7 +120,7 @@ class NotificationService {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       if (!(getIt<SharedPreferences>()
               .getBool(AppConstants.SHOW_NOTIFICATION) ??
-          false)) return;
+          true)) return;
       if (GetIt.I<AppRouter>().current.name == "ChatRoute") {
         return;
       }
