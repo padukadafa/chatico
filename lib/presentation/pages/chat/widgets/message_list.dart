@@ -58,8 +58,10 @@ class MessageList extends StatelessWidget {
             ),
           );
         }
-
-        ChatRemoteDataSource().resetUnreadedMessage(chatRoom);
+        if (snapshot.data!.first.sender !=
+            FirebaseAuth.instance.currentUser?.uid) {
+          ChatRemoteDataSource().resetUnreadedMessage(chatRoom);
+        }
         return Expanded(
           child: GroupedListView(
             controller: scrollController,

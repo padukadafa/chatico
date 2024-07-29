@@ -125,12 +125,11 @@ class ChatRemoteDataSource {
     ChatRoom chatRoom,
     Message msg,
   ) async {
-    await _firestore.collection('chatRooms').doc(chatRoom.roomId).set(
+    await _firestore.collection('chatRooms').doc(chatRoom.roomId).update(
       {
-        'unreadedMessage': chatRoom.unreadedMessage + 1,
+        'unreadedMessage': FieldValue.increment(1),
         'lastMessage': msg.toJson(),
       },
-      SetOptions(merge: true),
     );
   }
 
