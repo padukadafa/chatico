@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class AppConstants {
   static const String FIREBASE_MESSAGING_NOTIFICATION_URL =
       'https://fcm.googleapis.com/v1/projects/chatico-c302e/messages:send';
+  static const String SHOW_NOTIFICATION = 'show-notification';
   static Map<String, String> serviceAccount = {
     "type": dotenv.env['TYPE']!,
     "project_id": dotenv.env['PROJECT_ID']!,

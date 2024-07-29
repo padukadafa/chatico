@@ -5,6 +5,7 @@ import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/data/data_sources/user_remote_data_source.dart';
 import 'package:chatico/data/models/chat_room.dart';
 import 'package:chatico/data/models/user.dart';
+import 'package:chatico/di.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -15,7 +16,7 @@ class FriendsListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserRemoteDataSource _dataSource = UserRemoteDataSource();
+    final UserRemoteDataSource _dataSource = getIt<UserRemoteDataSource>();
 
     return Scaffold(
       appBar: AppBar(

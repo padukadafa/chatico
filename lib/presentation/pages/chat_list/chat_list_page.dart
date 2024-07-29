@@ -19,8 +19,10 @@ class ChatListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Chatico"),
+        backgroundColor: Colors.white,
         actions: [
           PopupMenuButton(
             iconSize: 28,
@@ -32,7 +34,9 @@ class ChatListPage extends StatelessWidget {
               return [
                 PopupMenuItem(
                   child: const Text("Settings"),
-                  onTap: () {},
+                  onTap: () {
+                    context.router.push(const SettingsRoute());
+                  },
                 ),
                 PopupMenuItem(
                   child: const Text("Logout"),

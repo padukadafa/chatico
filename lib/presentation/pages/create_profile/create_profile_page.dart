@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/data/data_sources/user_remote_data_source.dart';
 import 'package:chatico/data/models/user.dart';
+import 'package:chatico/di.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,7 +21,7 @@ class CreateProfilePage extends StatefulWidget {
 class _CreateProfilePageState extends State<CreateProfilePage> {
   final _nameController = TextEditingController();
   File? _avatarImage;
-  final _userRemoteDataSource = UserRemoteDataSource();
+  final _userRemoteDataSource = getIt<UserRemoteDataSource>();
   bool _loading = false;
   @override
   Widget build(BuildContext context) {

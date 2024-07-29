@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatico/data/data_sources/user_remote_data_source.dart';
+import 'package:chatico/di.dart';
 import 'package:flutter/material.dart';
 
 class UserAvatar extends StatelessWidget {
@@ -20,7 +21,7 @@ class UserAvatar extends StatelessWidget {
     }
     if (uid != null) {
       return FutureBuilder<String>(
-          future: UserRemoteDataSource().getUserAvatar(uid),
+          future: getIt<UserRemoteDataSource>().getUserAvatar(uid),
           builder: (context, snapshot) {
             return _userAvatar(snapshot.data!);
           });
@@ -33,6 +34,7 @@ class UserAvatar extends StatelessWidget {
   Widget _userAvatar(String url) {
     return CachedNetworkImage(
       imageUrl: url,
+      fit: BoxFit.cover,
       imageBuilder: (context, imageProvider) {
         return CircleAvatar(
           backgroundImage: imageProvider,

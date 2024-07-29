@@ -1,5 +1,6 @@
 import 'package:chatico/common/services/notification_service.dart';
 import 'package:chatico/core/router/app_router.dart';
+import 'package:chatico/di.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -14,7 +15,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   NotificationService.initilizeNotifification();
-  GetIt.instance.registerSingleton<AppRouter>(AppRouter());
+  await configureDependencies();
   await dotenv.load(fileName: '.env');
   runApp(MainApp());
 }
