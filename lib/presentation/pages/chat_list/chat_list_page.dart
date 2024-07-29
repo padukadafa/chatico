@@ -47,23 +47,23 @@ class ChatListPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        enableFeedback: false,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: "Messages",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group),
-            label: "Group",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.call),
-            label: "Call Logs",
-          ),
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   enableFeedback: false,
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.message),
+      //       label: "Messages",
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.group),
+      //       label: "Group",
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.call),
+      //       label: "Call Logs",
+      //     ),
+      //   ],
+      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.router.push(const FriendsListRoute());
