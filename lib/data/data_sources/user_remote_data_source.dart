@@ -50,20 +50,26 @@ class UserRemoteDataSource {
     return null;
   }
 
-  Future<void> addFriend(String uid) async {
-    final user = await getUser(uid);
-    if (user == null) {
-      throw Exception("User not Found");
-    }
+  Future<void> addFriend(UserModel user) async {
     final currentUid = _auth.currentUser!.uid;
     final currentUser = await getUser(currentUid);
-    await _firestore.doc(currentUid).collection("friends").doc(user.uid).set(
+    await _firestore
+        .collection("users")
+        .doc(currentUid)
+        .collection("friends")
+        .doc(user.uid)
+        .set(
           user.toJson(),
           SetOptions(
             merge: true,
           ),
         );
-    await _firestore.doc(user.uid).collection('friends').doc(currentUid).set(
+    await _firestore
+        .collection("users")
+        .doc(user.uid)
+        .collection('friends')
+        .doc(currentUid)
+        .set(
           currentUser!.toJson(),
           SetOptions(
             merge: true,

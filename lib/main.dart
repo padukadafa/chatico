@@ -4,6 +4,7 @@ import 'package:chatico/di.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_it/get_it.dart';
 import 'firebase_options.dart';
 
@@ -29,6 +30,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: _appRouter.config(),
       debugShowCheckedModeBanner: false,
+      builder: EasyLoading.init(),
     );
   }
 }

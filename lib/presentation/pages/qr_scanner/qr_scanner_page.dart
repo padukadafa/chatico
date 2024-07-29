@@ -6,6 +6,7 @@ import 'package:chatico/data/data_sources/user_remote_data_source.dart';
 import 'package:chatico/data/models/chat_room.dart';
 import 'package:chatico/di.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -19,6 +20,8 @@ class QrScannerPage extends StatefulWidget {
 
 class _QrScannerPageState extends State<QrScannerPage> {
   bool _isFlashOn = false;
+  bool _isLoading = false;
+  String _lastUserUid = "";
   final MobileScannerController controller = MobileScannerController(
     formats: const [BarcodeFormat.qrCode],
   );
@@ -53,19 +56,40 @@ class _QrScannerPageState extends State<QrScannerPage> {
           MobileScanner(
             controller: controller,
             onDetect: (barcodes) async {
+              if (_isLoading) {
+                return;
+              }
               for (var element in barcodes.barcodes) {
                 if (element.rawValue?.startsWith('chaticouid:') ?? false) {
-                  controller.stop();
                   final uid = element.rawValue!.replaceFirst("chaticouid:", "");
-                  await getIt<UserRemoteDataSource>().addFriend(uid);
-                  context.router.popAndPush(
-                    ChatRoute(
-                      chatRoom: ChatRoom(
-                        roomId: Utils.roomId(uid),
+                  if (uid == _lastUserUid) {
+                    EasyLoading.dismiss();
+                    return;
+                  }
+                  _isLoading = true;
+                  EasyLoading.show();
+
+                  _lastUserUid = uid;
+                  final user = await getIt<UserRemoteDataSource>().getUser(uid);
+                  if (user != null) {
+                    await getIt<UserRemoteDataSource>().addFriend(user);
+                    await controller.stop();
+                    EasyLoading.dismiss();
+
+                    context.router.popAndPush(
+                      ChatRoute(
+                        chatRoom: ChatRoom(
+                          roomId: Utils.roomId(uid),
+                          users: [user],
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                    return;
+                  }
+                  EasyLoading.showError("User Not Found");
+                  _isLoading = false;
                 }
+                EasyLoading.dismiss();
               }
             },
           ),
