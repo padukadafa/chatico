@@ -25,12 +25,19 @@ class UserRemoteDataSource {
     if (user.name != null) {
       await _auth.currentUser?.updateDisplayName(user.name);
     }
-    _firestore.doc(user.uid).set(
-          user.toJson(),
+    Map<String, dynamic> userJson = {};
+    user.toJson().forEach((key, value) {
+      if (value != null) {
+        userJson[key] = value;
+      }
+    });
+    await _firestore.collection('users').doc(user.uid).set(
+          userJson,
           SetOptions(
             merge: true,
           ),
         );
+    FirebaseAuth.instance.currentUser?.reload();
   }
 
   Future<String> updateUserAvatar(File image) async {

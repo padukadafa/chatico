@@ -9,7 +9,6 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:awesome_notifications/awesome_notifications.dart' as _i1006;
-import 'package:chatico/services/notification_service.dart' as _i289;
 import 'package:chatico/core/router/app_router.dart' as _i427;
 import 'package:chatico/data/data_sources/chat_remote_data_source.dart'
     as _i685;
@@ -18,6 +17,7 @@ import 'package:chatico/data/data_sources/db/notification_database.dart'
 import 'package:chatico/data/data_sources/user_remote_data_source.dart'
     as _i587;
 import 'package:chatico/di.dart' as _i98;
+import 'package:chatico/services/notification_service.dart' as _i353;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
 import 'package:firebase_auth/firebase_auth.dart' as _i59;
 import 'package:firebase_database/firebase_database.dart' as _i345;
@@ -39,7 +39,6 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final registerModul = _$RegisterModul();
-    gh.factory<_i289.NotificationService>(() => _i289.NotificationService());
     gh.factory<_i974.FirebaseFirestore>(() => registerModul.firebaseFirestore);
     gh.factory<_i59.FirebaseAuth>(() => registerModul.firebaseAuth);
     gh.factory<_i457.FirebaseStorage>(() => registerModul.firebaseStorage);
@@ -56,6 +55,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModul.appDatabase,
       preResolve: true,
     );
+    gh.factory<_i353.NotificationService>(() => _i353.NotificationService());
     gh.factory<_i685.ChatRemoteDataSource>(() => _i685.ChatRemoteDataSource());
     gh.factory<_i587.UserRemoteDataSource>(() => _i587.UserRemoteDataSource(
           gh<_i59.FirebaseAuth>(),
