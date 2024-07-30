@@ -630,6 +630,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.5"
+
   flutter_image_converter:
     dependency: "direct main"
     description:
@@ -744,6 +745,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.6"
+
   googleapis:
     dependency: "direct main"
     description:
@@ -1344,6 +1346,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+
   shelf:
     dependency: transitive
     description:

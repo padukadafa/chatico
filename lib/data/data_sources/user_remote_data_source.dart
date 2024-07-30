@@ -108,6 +108,7 @@ class UserRemoteDataSource {
       return "";
     }
     final uploadService = UploadService(_storage.ref());
+
     final response =
         await uploadService.getDownloadUrl("images/users/$uid/avatar.png");
     return response;
@@ -117,6 +118,7 @@ class UserRemoteDataSource {
     final fcmToken = await _messaging.getToken();
     final uid = _auth.currentUser!.uid;
     await _firestore.collection('users').doc(uid).set(
+
       {
         'fcmToken': fcmToken,
       },

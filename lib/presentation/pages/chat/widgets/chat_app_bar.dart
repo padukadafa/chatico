@@ -38,6 +38,7 @@ class _ChatAppBarState extends State<ChatAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
+
       title: _showSearch
           ? TextField(
               autofocus: true,

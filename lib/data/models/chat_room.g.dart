@@ -33,6 +33,7 @@ abstract class ChatRoomCollectionReference
     SnapshotOptions? options,
   ) {
     return ChatRoom.fromJson({'roomId': snapshot.id, ...?snapshot.data()});
+
   }
 
   static Map<String, Object?> toFirestore(
@@ -40,6 +41,7 @@ abstract class ChatRoomCollectionReference
     SetOptions? options,
   ) {
     return {...value.toJson()}..remove('roomId');
+
   }
 
   @override
@@ -142,6 +144,7 @@ abstract class ChatRoomDocumentReference
   /// The update will fail if applied to a document that does not exist.
   void transactionUpdate(
     Transaction transaction, {
+
     List<UserModel> users,
     FieldValue usersFieldValue,
     Message? lastMessage,
@@ -155,6 +158,7 @@ abstract class ChatRoomDocumentReference
   /// The update will fail if applied to a document that does not exist.
   void batchUpdate(
     WriteBatch batch, {
+
     List<UserModel> users,
     FieldValue usersFieldValue,
     Message? lastMessage,
@@ -193,6 +197,7 @@ class _$ChatRoomDocumentReference
   }
 
   Future<void> update({
+
     Object? users = _sentinel,
     FieldValue? usersFieldValue,
     Object? lastMessage = _sentinel,
@@ -201,6 +206,7 @@ class _$ChatRoomDocumentReference
     FieldValue? unreadedMessageFieldValue,
   }) async {
     assert(
+
       users == _sentinel || usersFieldValue == null,
       "Cannot specify both users and usersFieldValue",
     );
@@ -213,6 +219,7 @@ class _$ChatRoomDocumentReference
       "Cannot specify both unreadedMessage and unreadedMessageFieldValue",
     );
     final json = {
+
       if (users != _sentinel)
         _$$ChatRoomImplFieldMap['users']!:
             _$$ChatRoomImplPerFieldToJson.users(users as List<UserModel>),
@@ -236,6 +243,7 @@ class _$ChatRoomDocumentReference
 
   void transactionUpdate(
     Transaction transaction, {
+
     Object? users = _sentinel,
     FieldValue? usersFieldValue,
     Object? lastMessage = _sentinel,
@@ -244,6 +252,7 @@ class _$ChatRoomDocumentReference
     FieldValue? unreadedMessageFieldValue,
   }) {
     assert(
+
       users == _sentinel || usersFieldValue == null,
       "Cannot specify both users and usersFieldValue",
     );
@@ -256,6 +265,7 @@ class _$ChatRoomDocumentReference
       "Cannot specify both unreadedMessage and unreadedMessageFieldValue",
     );
     final json = {
+
       if (users != _sentinel)
         _$$ChatRoomImplFieldMap['users']!:
             _$$ChatRoomImplPerFieldToJson.users(users as List<UserModel>),
@@ -279,6 +289,7 @@ class _$ChatRoomDocumentReference
 
   void batchUpdate(
     WriteBatch batch, {
+
     Object? users = _sentinel,
     FieldValue? usersFieldValue,
     Object? lastMessage = _sentinel,
@@ -287,6 +298,7 @@ class _$ChatRoomDocumentReference
     FieldValue? unreadedMessageFieldValue,
   }) {
     assert(
+
       users == _sentinel || usersFieldValue == null,
       "Cannot specify both users and usersFieldValue",
     );
@@ -299,6 +311,7 @@ class _$ChatRoomDocumentReference
       "Cannot specify both unreadedMessage and unreadedMessageFieldValue",
     );
     final json = {
+
       if (users != _sentinel)
         _$$ChatRoomImplFieldMap['users']!:
             _$$ChatRoomImplPerFieldToJson.users(users as List<UserModel>),
@@ -384,6 +397,7 @@ abstract class ChatRoomQuery
     bool? isNull,
   });
 
+
   ChatRoomQuery whereUsers({
     List<UserModel>? isEqualTo,
     List<UserModel>? isNotEqualTo,
@@ -464,6 +478,7 @@ abstract class ChatRoomQuery
     ChatRoomDocumentSnapshot? endBeforeDocument,
     ChatRoomDocumentSnapshot? startAfterDocument,
   });
+
 
   ChatRoomQuery orderByUsers({
     bool descending = false,
@@ -615,6 +630,7 @@ class _$ChatRoomQuery extends QueryReference<ChatRoom, ChatRoomQuerySnapshot>
   }
 
   @override
+
   ChatRoomQuery whereUsers({
     Object? isEqualTo = _sentinel,
     Object? isNotEqualTo = _sentinel,
@@ -916,6 +932,7 @@ class _$ChatRoomQuery extends QueryReference<ChatRoom, ChatRoomQuerySnapshot>
   }
 
   @override
+
   ChatRoomQuery orderByUsers({
     bool descending = false,
     Object? startAt = _sentinel,
