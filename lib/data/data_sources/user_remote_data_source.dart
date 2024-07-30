@@ -40,12 +40,21 @@ class UserRemoteDataSource {
     FirebaseAuth.instance.currentUser?.reload();
   }
 
-  Future<String> updateUserAvatar(File image) async {
+  Future<String> updateUserAvatar(File image,
+      {bool toggleFirestore = false}) async {
     final uploadService = UploadService(_storage.ref());
 
     final response = await uploadService.uploadFile(image,
         "images/users/${_auth.currentUser?.uid}/avatar${extension(image.path)}");
     await _auth.currentUser?.updatePhotoURL(response);
+    if (toggleFirestore) {
+      updateProfile(
+        UserModel(
+          uid: _auth.currentUser!.uid,
+          avatar: response,
+        ),
+      );
+    }
     return response;
   }
 

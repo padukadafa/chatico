@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:chatico/common/values/app_constants.dart';
 import 'package:chatico/common/widgets/user_avatar.dart';
@@ -7,7 +9,9 @@ import 'package:chatico/data/models/user.dart';
 import 'package:chatico/di.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @RoutePage()
@@ -60,7 +64,19 @@ class _SettingsPageState extends State<SettingsPage> {
                             Align(
                               alignment: Alignment.bottomRight,
                               child: IconButton.filled(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  final response = await ImagePicker()
+                                      .pickImage(source: ImageSource.gallery);
+                                  if (response != null) {
+                                    EasyLoading.show(
+                                      dismissOnTap: false,
+                                      maskType: EasyLoadingMaskType.black,
+                                    );
+                                    await getIt<UserRemoteDataSource>()
+                                        .updateUserAvatar(File(response.path));
+                                    EasyLoading.dismiss();
+                                  }
+                                },
                                 icon: const Icon(
                                   Icons.edit,
                                 ),
