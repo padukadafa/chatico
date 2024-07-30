@@ -2,22 +2,26 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
-import 'package:chatico/common/services/notification_service.dart';
-import 'package:chatico/common/services/upload_service.dart';
+import 'package:chatico/services/notification_service.dart';
+import 'package:chatico/services/upload_service.dart';
+
 import 'package:chatico/common/utils/utils.dart';
 import 'package:chatico/data/data_sources/user_remote_data_source.dart';
 import 'package:chatico/data/models/chat_room.dart';
 import 'package:chatico/data/models/message.dart';
 import 'package:chatico/data/models/notification.dart';
 import 'package:chatico/data/models/user.dart';
+import 'package:chatico/di.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:uuid/v4.dart';
 
+@injectable
 class ChatRemoteDataSource {
   final _storage = FirebaseStorage.instance.ref();
   final _firestore = FirebaseFirestore.instance;
@@ -55,9 +59,9 @@ class ChatRemoteDataSource {
         FirebaseDatabase.instance.ref("chatRooms/$roomId/messages/$messageId");
     if (chatRoom.users.length < 2) {
       final firstUser =
-          await UserRemoteDataSource().getUser(roomId.split("&")[0]);
+          await getIt<UserRemoteDataSource>().getUser(roomId.split("&")[0]);
       final secondUser =
-          await UserRemoteDataSource().getUser(roomId.split("&")[1]);
+          await getIt<UserRemoteDataSource>().getUser(roomId.split("&")[1]);
       if (secondUser == null || firstUser == null) {
         return;
       }
@@ -122,12 +126,11 @@ class ChatRemoteDataSource {
     ChatRoom chatRoom,
     Message msg,
   ) async {
-    await _firestore.collection('chatRooms').doc(chatRoom.roomId).set(
+    await _firestore.collection('chatRooms').doc(chatRoom.roomId).update(
       {
-        'unreadedMessage': chatRoom.unreadedMessage + 1,
+        'unreadedMessage': FieldValue.increment(1),
         'lastMessage': msg.toJson(),
       },
-      SetOptions(merge: true),
     );
   }
 

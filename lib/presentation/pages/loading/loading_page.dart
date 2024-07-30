@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:chatico/common/services/notification_service.dart';
+import 'package:chatico/services/notification_service.dart';
+
 import 'package:chatico/core/router/app_router.dart';
 import 'package:chatico/data/data_sources/user_remote_data_source.dart';
+import 'package:chatico/di.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,8 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<LoadingPage> {
-  final dataSource = UserRemoteDataSource();
+  final dataSource = getIt<UserRemoteDataSource>();
+
   @override
   void initState() {
     super.initState();

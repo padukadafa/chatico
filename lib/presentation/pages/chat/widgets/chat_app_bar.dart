@@ -37,7 +37,8 @@ class _ChatAppBarState extends State<ChatAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: _showSearch ? Colors.white : Colors.amber,
+      backgroundColor: Colors.white,
+
       title: _showSearch
           ? TextField(
               autofocus: true,

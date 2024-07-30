@@ -24,20 +24,22 @@ extension Format on DateTime {
 
   String groupedDifferentFromNow() {
     final now = DateTime.now();
-    if (now.difference(this).inDays < 1) {
+    final diff = now.difference(this).inDays;
+    if (diff < 1) {
       return "Today";
     }
-    if (now.difference(this).inDays < 7) {
+    if (diff < 7) {
+
       return DateFormat('EEE').format(this);
     }
     final dayThisMonth = DateTime(now.year, now.month)
         .difference(DateTime(now.year, now.month + 1))
         .inDays;
-    if (now.difference(this).inDays < dayThisMonth) {
+    if (diff < dayThisMonth) {
       return DateFormat('dd').format(this);
     }
     final dayBeforeEndYear = now.difference(DateTime(now.year + 1)).inDays;
-    if (now.difference(this).inDays < 365 + dayBeforeEndYear) {
+    if (diff < 365 + dayBeforeEndYear) {
       return DateFormat('dd MMM').format(this);
     }
     return DateFormat('yyyy').format(this);

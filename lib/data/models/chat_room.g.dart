@@ -32,14 +32,16 @@ abstract class ChatRoomCollectionReference
     DocumentSnapshot<Map<String, Object?>> snapshot,
     SnapshotOptions? options,
   ) {
-    return ChatRoom.fromJson(snapshot.data()!);
+    return ChatRoom.fromJson({'roomId': snapshot.id, ...?snapshot.data()});
+
   }
 
   static Map<String, Object?> toFirestore(
     ChatRoom value,
     SetOptions? options,
   ) {
-    return value.toJson();
+    return {...value.toJson()}..remove('roomId');
+
   }
 
   @override
@@ -129,8 +131,6 @@ abstract class ChatRoomDocumentReference
   ///
   /// If no document exists yet, the update will fail.
   Future<void> update({
-    String? roomId,
-    FieldValue roomIdFieldValue,
     List<UserModel> users,
     FieldValue usersFieldValue,
     Message? lastMessage,
@@ -144,8 +144,7 @@ abstract class ChatRoomDocumentReference
   /// The update will fail if applied to a document that does not exist.
   void transactionUpdate(
     Transaction transaction, {
-    String? roomId,
-    FieldValue roomIdFieldValue,
+
     List<UserModel> users,
     FieldValue usersFieldValue,
     Message? lastMessage,
@@ -159,8 +158,7 @@ abstract class ChatRoomDocumentReference
   /// The update will fail if applied to a document that does not exist.
   void batchUpdate(
     WriteBatch batch, {
-    String? roomId,
-    FieldValue roomIdFieldValue,
+
     List<UserModel> users,
     FieldValue usersFieldValue,
     Message? lastMessage,
@@ -199,8 +197,7 @@ class _$ChatRoomDocumentReference
   }
 
   Future<void> update({
-    Object? roomId = _sentinel,
-    FieldValue? roomIdFieldValue,
+
     Object? users = _sentinel,
     FieldValue? usersFieldValue,
     Object? lastMessage = _sentinel,
@@ -209,10 +206,7 @@ class _$ChatRoomDocumentReference
     FieldValue? unreadedMessageFieldValue,
   }) async {
     assert(
-      roomId == _sentinel || roomIdFieldValue == null,
-      "Cannot specify both roomId and roomIdFieldValue",
-    );
-    assert(
+
       users == _sentinel || usersFieldValue == null,
       "Cannot specify both users and usersFieldValue",
     );
@@ -225,11 +219,7 @@ class _$ChatRoomDocumentReference
       "Cannot specify both unreadedMessage and unreadedMessageFieldValue",
     );
     final json = {
-      if (roomId != _sentinel)
-        _$$ChatRoomImplFieldMap['roomId']!:
-            _$$ChatRoomImplPerFieldToJson.roomId(roomId as String?),
-      if (roomIdFieldValue != null)
-        _$$ChatRoomImplFieldMap['roomId']!: roomIdFieldValue,
+
       if (users != _sentinel)
         _$$ChatRoomImplFieldMap['users']!:
             _$$ChatRoomImplPerFieldToJson.users(users as List<UserModel>),
@@ -253,8 +243,7 @@ class _$ChatRoomDocumentReference
 
   void transactionUpdate(
     Transaction transaction, {
-    Object? roomId = _sentinel,
-    FieldValue? roomIdFieldValue,
+
     Object? users = _sentinel,
     FieldValue? usersFieldValue,
     Object? lastMessage = _sentinel,
@@ -263,10 +252,7 @@ class _$ChatRoomDocumentReference
     FieldValue? unreadedMessageFieldValue,
   }) {
     assert(
-      roomId == _sentinel || roomIdFieldValue == null,
-      "Cannot specify both roomId and roomIdFieldValue",
-    );
-    assert(
+
       users == _sentinel || usersFieldValue == null,
       "Cannot specify both users and usersFieldValue",
     );
@@ -279,11 +265,7 @@ class _$ChatRoomDocumentReference
       "Cannot specify both unreadedMessage and unreadedMessageFieldValue",
     );
     final json = {
-      if (roomId != _sentinel)
-        _$$ChatRoomImplFieldMap['roomId']!:
-            _$$ChatRoomImplPerFieldToJson.roomId(roomId as String?),
-      if (roomIdFieldValue != null)
-        _$$ChatRoomImplFieldMap['roomId']!: roomIdFieldValue,
+
       if (users != _sentinel)
         _$$ChatRoomImplFieldMap['users']!:
             _$$ChatRoomImplPerFieldToJson.users(users as List<UserModel>),
@@ -307,8 +289,7 @@ class _$ChatRoomDocumentReference
 
   void batchUpdate(
     WriteBatch batch, {
-    Object? roomId = _sentinel,
-    FieldValue? roomIdFieldValue,
+
     Object? users = _sentinel,
     FieldValue? usersFieldValue,
     Object? lastMessage = _sentinel,
@@ -317,10 +298,7 @@ class _$ChatRoomDocumentReference
     FieldValue? unreadedMessageFieldValue,
   }) {
     assert(
-      roomId == _sentinel || roomIdFieldValue == null,
-      "Cannot specify both roomId and roomIdFieldValue",
-    );
-    assert(
+
       users == _sentinel || usersFieldValue == null,
       "Cannot specify both users and usersFieldValue",
     );
@@ -333,11 +311,7 @@ class _$ChatRoomDocumentReference
       "Cannot specify both unreadedMessage and unreadedMessageFieldValue",
     );
     final json = {
-      if (roomId != _sentinel)
-        _$$ChatRoomImplFieldMap['roomId']!:
-            _$$ChatRoomImplPerFieldToJson.roomId(roomId as String?),
-      if (roomIdFieldValue != null)
-        _$$ChatRoomImplFieldMap['roomId']!: roomIdFieldValue,
+
       if (users != _sentinel)
         _$$ChatRoomImplFieldMap['users']!:
             _$$ChatRoomImplPerFieldToJson.users(users as List<UserModel>),
@@ -423,17 +397,6 @@ abstract class ChatRoomQuery
     bool? isNull,
   });
 
-  ChatRoomQuery whereRoomId({
-    String? isEqualTo,
-    String? isNotEqualTo,
-    String? isLessThan,
-    String? isLessThanOrEqualTo,
-    String? isGreaterThan,
-    String? isGreaterThanOrEqualTo,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
-    bool? isNull,
-  });
 
   ChatRoomQuery whereUsers({
     List<UserModel>? isEqualTo,
@@ -516,17 +479,6 @@ abstract class ChatRoomQuery
     ChatRoomDocumentSnapshot? startAfterDocument,
   });
 
-  ChatRoomQuery orderByRoomId({
-    bool descending = false,
-    String? startAt,
-    String? startAfter,
-    String? endAt,
-    String? endBefore,
-    ChatRoomDocumentSnapshot? startAtDocument,
-    ChatRoomDocumentSnapshot? endAtDocument,
-    ChatRoomDocumentSnapshot? endBeforeDocument,
-    ChatRoomDocumentSnapshot? startAfterDocument,
-  });
 
   ChatRoomQuery orderByUsers({
     bool descending = false,
@@ -678,53 +630,7 @@ class _$ChatRoomQuery extends QueryReference<ChatRoom, ChatRoomQuerySnapshot>
   }
 
   @override
-  ChatRoomQuery whereRoomId({
-    Object? isEqualTo = _sentinel,
-    Object? isNotEqualTo = _sentinel,
-    Object? isLessThan,
-    Object? isLessThanOrEqualTo,
-    Object? isGreaterThan,
-    Object? isGreaterThanOrEqualTo,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
-    bool? isNull,
-  }) {
-    return _$ChatRoomQuery(
-      _collection,
-      $referenceWithoutCursor: $referenceWithoutCursor.where(
-        _$$ChatRoomImplFieldMap['roomId']!,
-        isEqualTo: isEqualTo != _sentinel
-            ? _$$ChatRoomImplPerFieldToJson.roomId(isEqualTo as String?)
-            : null,
-        isNotEqualTo: isNotEqualTo != _sentinel
-            ? _$$ChatRoomImplPerFieldToJson.roomId(isNotEqualTo as String?)
-            : null,
-        isLessThan: isLessThan != null
-            ? _$$ChatRoomImplPerFieldToJson.roomId(isLessThan as String?)
-            : null,
-        isLessThanOrEqualTo: isLessThanOrEqualTo != null
-            ? _$$ChatRoomImplPerFieldToJson
-                .roomId(isLessThanOrEqualTo as String?)
-            : null,
-        isGreaterThan: isGreaterThan != null
-            ? _$$ChatRoomImplPerFieldToJson.roomId(isGreaterThan as String?)
-            : null,
-        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo != null
-            ? _$$ChatRoomImplPerFieldToJson
-                .roomId(isGreaterThanOrEqualTo as String?)
-            : null,
-        whereIn: whereIn?.map((e) => _$$ChatRoomImplPerFieldToJson.roomId(e)),
-        whereNotIn:
-            whereNotIn?.map((e) => _$$ChatRoomImplPerFieldToJson.roomId(e)),
-        isNull: isNull ??
-            (isEqualTo == null ? false : null) ??
-            (isNotEqualTo == null ? true : null),
-      ),
-      $queryCursor: $queryCursor,
-    );
-  }
 
-  @override
   ChatRoomQuery whereUsers({
     Object? isEqualTo = _sentinel,
     Object? isNotEqualTo = _sentinel,
@@ -1026,79 +932,7 @@ class _$ChatRoomQuery extends QueryReference<ChatRoom, ChatRoomQuerySnapshot>
   }
 
   @override
-  ChatRoomQuery orderByRoomId({
-    bool descending = false,
-    Object? startAt = _sentinel,
-    Object? startAfter = _sentinel,
-    Object? endAt = _sentinel,
-    Object? endBefore = _sentinel,
-    ChatRoomDocumentSnapshot? startAtDocument,
-    ChatRoomDocumentSnapshot? endAtDocument,
-    ChatRoomDocumentSnapshot? endBeforeDocument,
-    ChatRoomDocumentSnapshot? startAfterDocument,
-  }) {
-    final query = $referenceWithoutCursor
-        .orderBy(_$$ChatRoomImplFieldMap['roomId']!, descending: descending);
-    var queryCursor = $queryCursor;
 
-    if (startAtDocument != null) {
-      queryCursor = queryCursor.copyWith(
-        startAt: const [],
-        startAtDocumentSnapshot: startAtDocument.snapshot,
-      );
-    }
-    if (startAfterDocument != null) {
-      queryCursor = queryCursor.copyWith(
-        startAfter: const [],
-        startAfterDocumentSnapshot: startAfterDocument.snapshot,
-      );
-    }
-    if (endAtDocument != null) {
-      queryCursor = queryCursor.copyWith(
-        endAt: const [],
-        endAtDocumentSnapshot: endAtDocument.snapshot,
-      );
-    }
-    if (endBeforeDocument != null) {
-      queryCursor = queryCursor.copyWith(
-        endBefore: const [],
-        endBeforeDocumentSnapshot: endBeforeDocument.snapshot,
-      );
-    }
-
-    if (startAt != _sentinel) {
-      queryCursor = queryCursor.copyWith(
-        startAt: [...queryCursor.startAt, startAt],
-        startAtDocumentSnapshot: null,
-      );
-    }
-    if (startAfter != _sentinel) {
-      queryCursor = queryCursor.copyWith(
-        startAfter: [...queryCursor.startAfter, startAfter],
-        startAfterDocumentSnapshot: null,
-      );
-    }
-    if (endAt != _sentinel) {
-      queryCursor = queryCursor.copyWith(
-        endAt: [...queryCursor.endAt, endAt],
-        endAtDocumentSnapshot: null,
-      );
-    }
-    if (endBefore != _sentinel) {
-      queryCursor = queryCursor.copyWith(
-        endBefore: [...queryCursor.endBefore, endBefore],
-        endBeforeDocumentSnapshot: null,
-      );
-    }
-
-    return _$ChatRoomQuery(
-      _collection,
-      $referenceWithoutCursor: query,
-      $queryCursor: queryCursor,
-    );
-  }
-
-  @override
   ChatRoomQuery orderByUsers({
     bool descending = false,
     Object? startAt = _sentinel,

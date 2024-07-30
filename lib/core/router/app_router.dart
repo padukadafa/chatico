@@ -4,13 +4,14 @@ import 'package:chatico/presentation/pages/chat/chat_page.dart';
 import 'package:chatico/presentation/pages/chat_list/chat_list_page.dart';
 import 'package:chatico/presentation/pages/auth/code_verification/code_verification_page.dart';
 import 'package:chatico/presentation/pages/create_profile/create_profile_page.dart';
+import 'package:chatico/presentation/pages/edit_profile/edit_profile_page.dart';
 import 'package:chatico/presentation/pages/friends_list/friends_list_page.dart';
 import 'package:chatico/presentation/pages/auth/login/login_page.dart';
 import 'package:chatico/presentation/pages/loading/loading_page.dart';
 import 'package:chatico/presentation/pages/qr_scanner/qr_scanner_page.dart';
+import 'package:chatico/presentation/pages/settings/settings_page.dart';
 import 'package:chatico/presentation/pages/user_qr/user_qr_page.dart';
 import 'package:chatico/presentation/pages/wrapper/wrapper_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 part 'app_router.gr.dart';
 
@@ -28,5 +29,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: UserQRRoute.page),
         AutoRoute(page: QrScannerRoute.page),
         AutoRoute(page: CreateProfileRoute.page),
+        AutoRoute(page: SettingsRoute.page),
+        AutoRoute(page: EditProfileRoute.page),
       ];
 }

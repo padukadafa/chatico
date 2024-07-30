@@ -20,6 +20,7 @@ ChatRoom _$ChatRoomFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ChatRoom {
+  @Id()
   String? get roomId => throw _privateConstructorUsedError;
   @UserModelConverter()
   List<UserModel> get users => throw _privateConstructorUsedError;
@@ -38,7 +39,7 @@ abstract class $ChatRoomCopyWith<$Res> {
       _$ChatRoomCopyWithImpl<$Res, ChatRoom>;
   @useResult
   $Res call(
-      {String? roomId,
+      {@Id() String? roomId,
       @UserModelConverter() List<UserModel> users,
       Message? lastMessage,
       int unreadedMessage});
@@ -106,7 +107,7 @@ abstract class _$$ChatRoomImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? roomId,
+      {@Id() String? roomId,
       @UserModelConverter() List<UserModel> users,
       Message? lastMessage,
       int unreadedMessage});
@@ -156,7 +157,7 @@ class __$$ChatRoomImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ChatRoomImpl implements _ChatRoom {
   const _$ChatRoomImpl(
-      {this.roomId,
+      {@Id() this.roomId,
       @UserModelConverter() final List<UserModel> users = const [],
       this.lastMessage,
       this.unreadedMessage = 0})
@@ -166,6 +167,7 @@ class _$ChatRoomImpl implements _ChatRoom {
       _$$ChatRoomImplFromJson(json);
 
   @override
+  @Id()
   final String? roomId;
   final List<UserModel> _users;
   @override
@@ -226,7 +228,7 @@ class _$ChatRoomImpl implements _ChatRoom {
 
 abstract class _ChatRoom implements ChatRoom {
   const factory _ChatRoom(
-      {final String? roomId,
+      {@Id() final String? roomId,
       @UserModelConverter() final List<UserModel> users,
       final Message? lastMessage,
       final int unreadedMessage}) = _$ChatRoomImpl;
@@ -235,6 +237,7 @@ abstract class _ChatRoom implements ChatRoom {
       _$ChatRoomImpl.fromJson;
 
   @override
+  @Id()
   String? get roomId;
   @override
   @UserModelConverter()

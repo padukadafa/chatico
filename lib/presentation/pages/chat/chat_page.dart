@@ -75,6 +75,8 @@ class _ChatPageState extends State<ChatPage> {
               MessageBox(
                 messageController: messageController,
                 chatRoom: widget.chatRoom,
+                scrollController: scrollController,
+
               )
             ],
           ),

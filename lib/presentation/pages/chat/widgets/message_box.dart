@@ -2,6 +2,8 @@ import 'package:chatico/data/data_sources/chat_remote_data_source.dart';
 import 'package:chatico/data/models/chat_room.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
+
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class MessageBox extends StatelessWidget {
@@ -9,10 +11,12 @@ class MessageBox extends StatelessWidget {
     super.key,
     required this.messageController,
     required this.chatRoom,
+    required this.scrollController,
   });
 
   final TextEditingController messageController;
   final ChatRoom chatRoom;
+  final AutoScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +85,9 @@ class MessageBox extends StatelessWidget {
             width: 8,
           ),
           IconButton.filled(
-            onPressed: () {
-              _sendMessage(messageController.text);
+            onPressed: () async {
+              await _sendMessage(messageController.text);
+
             },
             icon: const FaIcon(
               FontAwesomeIcons.solidPaperPlane,
@@ -97,7 +102,8 @@ class MessageBox extends StatelessWidget {
     );
   }
 
-  _sendMessage(String message) async {
+  Future<void> _sendMessage(String message) async {
+
     ChatRemoteDataSource().sendMessage(chatRoom, message: message);
     messageController.clear();
   }

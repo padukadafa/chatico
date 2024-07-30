@@ -25,16 +25,21 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.6
   flutter_dotenv: ^5.1.0
+  flutter_easyloading: ^3.0.5
+
   flutter_image_converter: ^0.3.3
   flutter_lorem: ^2.0.0
   font_awesome_flutter: ^10.7.0
   freezed_annotation: ^2.4.4
   get_it: ^7.7.0
+  google_nav_bar: ^5.0.6
+
   googleapis: ^13.2.0
   googleapis_auth: ^1.6.0
   grouped_list: ^6.0.0
   http: ^1.2.2
   image_picker: ^1.1.2
+  injectable: ^2.4.4
   intl: ^0.19.0
   json_annotation: ^4.9.0
   loading_animation_widget: ^1.2.1
@@ -45,6 +50,8 @@ dependencies:
   pinput: ^5.0.0
   pretty_qr_code: ^3.3.0
   scroll_to_index: ^3.0.1
+  shared_preferences: ^2.2.3
+
   skeletonizer: ^1.4.1+1
   sqflite: ^2.3.3+1
   super_context_menu: ^0.8.17
@@ -61,9 +68,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   freezed: ^2.5.2
+  injectable_generator: ^2.6.2
   json_serializable: ^6.8.0
 
 flutter:
   uses-material-design: true
   assets:
     - assets/images/wallpapers/
+    - .env
