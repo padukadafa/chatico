@@ -27,6 +27,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   flutter_easyloading: ^3.0.5
   flutter_image_converter: ^0.3.3
+  flutter_launcher_icons: ^0.13.1
   flutter_lorem: ^2.0.0
   font_awesome_flutter: ^10.7.0
   freezed_annotation: ^2.4.4
@@ -73,3 +74,7 @@ flutter:
   assets:
     - assets/images/wallpapers/
     - .env
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/chatico_icon.png"
