@@ -29,6 +29,7 @@ extension Format on DateTime {
       return "Today";
     }
     if (diff < 7) {
+
       return DateFormat('EEE').format(this);
     }
     final dayThisMonth = DateTime(now.year, now.month)

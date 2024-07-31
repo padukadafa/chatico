@@ -5,6 +5,7 @@ import 'package:chatico/data/models/message.dart';
 import 'package:chatico/presentation/pages/chat/widgets/chat_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
+
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -62,6 +63,7 @@ class MessageList extends StatelessWidget {
             FirebaseAuth.instance.currentUser?.uid) {
           ChatRemoteDataSource().resetUnreadedMessage(chatRoom);
         }
+
         return Expanded(
           child: GroupedListView(
             controller: scrollController,
@@ -72,6 +74,7 @@ class MessageList extends StatelessWidget {
             dragStartBehavior: DragStartBehavior.down,
             groupBy: (e) => e.createdAt!.groupedDifferentFromNow(),
             groupComparator: (value1, value2) => value2.compareTo(value1),
+
             indexedItemBuilder: (context, element, index) {
               return AutoScrollTag(
                 index: index,

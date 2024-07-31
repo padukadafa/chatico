@@ -22,6 +22,7 @@ class UserAvatar extends StatelessWidget {
     if (uid != null) {
       return FutureBuilder<String>(
           future: getIt<UserRemoteDataSource>().getUserAvatar(uid),
+
           builder: (context, snapshot) {
             return _userAvatar(snapshot.data!);
           });
@@ -35,6 +36,7 @@ class UserAvatar extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: url,
       fit: BoxFit.cover,
+
       imageBuilder: (context, imageProvider) {
         return CircleAvatar(
           backgroundImage: imageProvider,
